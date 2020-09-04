@@ -26,7 +26,7 @@ namespace LCNMath{
 				(*this)[i] = 1.0f;
 			}
 
-			VectorND(std::initializer_list<float> _paramlist) :
+			VectorND(const std::initializer_list<float>& _paramlist) :
 				MatrixN1<T, N>(_paramlist)
 			{}
 
