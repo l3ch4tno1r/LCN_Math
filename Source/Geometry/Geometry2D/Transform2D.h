@@ -68,6 +68,13 @@ namespace LCNMath {
 					}
 				}
 
+				Transform2D& operator=(const Transform2D& other)
+				{
+					mat = other.mat;
+
+					return *this;
+				}
+
 				void SetRotationAngle(float a)
 				{
 					Rux =  std::cos(TORAD(a));
