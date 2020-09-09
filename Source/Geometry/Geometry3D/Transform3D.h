@@ -48,6 +48,13 @@ struct Transform3D
 	Transform3D(const SqrSMatrix44<T>& _mat) :
 		mat(_mat)
 	{}
+
+	Transform3D& operator=(const Transform3D& other)
+	{
+		mat = other.mat;
+
+		return *this;
+	}
 };
 
 template<typename T>
