@@ -10,10 +10,10 @@ namespace LCNMath {
 		namespace Dim2 {
 
 			template<typename T>
-			using SMatrix33f = LCNMath::Matrix::StaticMatrix::Matrix<T, 3, 3>;
+			using SMatrix33 = LCNMath::Matrix::StaticMatrix::Matrix<T, 3, 3>;
 
 			template<typename T>
-			using SqrSMatrix33f = LCNMath::Matrix::StaticMatrix::SqrMatrix<T, 3>;
+			using SqrSMatrix33 = LCNMath::Matrix::StaticMatrix::SqrMatrix<T, 3>;
 
 			template<typename T>
 			union Transform2D
@@ -29,17 +29,17 @@ namespace LCNMath {
 					// [  0,   0,   1 ]
 			;	};
 
-				SqrSMatrix33f<T> mat;
+				SqrSMatrix33<T> mat;
 
 				Transform2D() :
 					mat(true)
 				{}
 
-				Transform2D(const SMatrix33f<T>& _mat) :
+				Transform2D(const SMatrix33<T>& _mat) :
 					mat(_mat)
 				{}
 
-				Transform2D(const SqrSMatrix33f<T>& _mat) :
+				Transform2D(const SqrSMatrix33<T>& _mat) :
 					mat(_mat)
 				{}
 
