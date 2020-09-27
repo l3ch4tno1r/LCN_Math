@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "Source/ErrorHandling.h"
 
 #pragma region MatrixExpression
@@ -158,6 +160,51 @@ MatrixMul<EL, ER, T> operator*(const MatrixExpression<EL, T>& el, const MatrixEx
 
 	return MatrixMul<EL, ER, T>(static_cast<const EL&>(el), static_cast<const ER&>(er));
 }
+
+/////////////////
+//-- Scaling --//
+/////////////////
+
+template<class E, typename T>
+class MatrixScale : public MatrixExpression<MatrixScale<E, T>, T>
+{
+private:
+	const E& e;
+	T scalefactor;
+
+	MatrixScale(const E& e, T scalefactor) :
+		e(e),
+		scalefactor(scalefactor)
+	{}
+
+	template<class E, typename T>
+	friend MatrixScale<E, T> operator*(const MatrixExpression<E, T>&, T);
+
+	template<class E, typename T>
+	friend MatrixScale<E, T> operator*(T, const MatrixExpression<E, T>&);
+
+public:
+	T operator()(size_t i, size_t j) const
+	{
+		return scalefactor * e(i, j);
+	}
+
+	size_t Line()   const { return e.Line(); }
+	size_t Column() const { return e.Column(); }
+};
+
+template<class E, typename T>
+MatrixScale<E, T> operator*(const MatrixExpression<E, T>& e, T scalefactor)
+{
+	return MatrixScale<E, T>(static_cast<const E&>(e), scalefactor);
+}
+
+template<class E, typename T>
+MatrixScale<E, T> operator*(T scalefactor, const MatrixExpression<E, T>& e)
+{
+	return MatrixScale<E, T>(static_cast<const E&>(e), scalefactor);
+}
+
 #pragma endregion
 
 #pragma endregion
