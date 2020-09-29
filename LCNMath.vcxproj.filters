@@ -45,22 +45,22 @@
     <ClInclude Include="Source\Utilities\Angles.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix2\MatrixBase.h">
+    <ClInclude Include="Source\Geometry2\VectorBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix2\MatrixExpression.h">
+    <ClInclude Include="Source\Geometry2\3D\Vector3D.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix2\StaticMatrix.h">
+    <ClInclude Include="Source\_Matrix\MatrixBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix2\StaticMatrixBase.h">
+    <ClInclude Include="Source\_Matrix\MatrixExpression.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix2\Vector3D.h">
+    <ClInclude Include="Source\_Matrix\StaticMatrix.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Matrix2\VectorBase.h">
+    <ClInclude Include="Source\_Matrix\StaticMatrixBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
