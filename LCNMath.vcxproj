@@ -130,8 +130,8 @@
     <ClInclude Include="Source\_Matrix\MatrixExpression.h" />
     <ClInclude Include="Source\_Matrix\StaticMatrix.h" />
     <ClInclude Include="Source\_Matrix\StaticMatrixBase.h" />
-    <ClInclude Include="Source\Geometry2\3D\Vector3D.h" />
-    <ClInclude Include="Source\Geometry2\VectorBase.h" />
+    <ClInclude Include="Source\_Geometry\3D\Vector3D.h" />
+    <ClInclude Include="Source\_Geometry\VectorBase.h" />
     <ClInclude Include="Source\Matrix\Heap\HMatrix.h" />
     <ClInclude Include="Source\Matrix\Stack\SMatrix.h" />
     <ClInclude Include="Source\Matrix\Stack\SqrSMatrix.h" />
