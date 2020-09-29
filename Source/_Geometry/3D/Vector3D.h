@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Geometry2/VectorBase.h"
+#include "_Geometry/VectorBase.h"
 
 template<typename T>
 struct Vector3D : public VectorBase<Vector3D<T>, T, 3>
