@@ -63,5 +63,8 @@
     <ClInclude Include="Source\_Geometry\VectorBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Source\_Geometry\3D\HVector3D.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

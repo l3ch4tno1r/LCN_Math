@@ -126,6 +126,7 @@
     <ClInclude Include="Source\Geometry\Geometry3D\Transform3D.h" />
     <ClInclude Include="Source\Geometry\HVectorND.h" />
     <ClInclude Include="Source\Geometry\VectorND.h" />
+    <ClInclude Include="Source\_Geometry\3D\HVector3D.h" />
     <ClInclude Include="Source\_Matrix\MatrixBase.h" />
     <ClInclude Include="Source\_Matrix\MatrixExpression.h" />
     <ClInclude Include="Source\_Matrix\StaticMatrix.h" />
