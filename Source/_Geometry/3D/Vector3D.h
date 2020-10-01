@@ -58,6 +58,9 @@ private:
 	{}
 
 	template<class EL, class ER, typename T>
+	friend Vector3DCrossProduct<EL, ER, T> operator^(const StaticMatrixBase<EL, T, 3, 1>&, const StaticMatrixBase<ER, T, 3, 1>&);
+
+	template<class EL, class ER, typename T>
 	friend Vector3DCrossProduct<EL, ER, T> operator^(const MatrixExpression<EL, T>&, const MatrixExpression<ER, T>&);
 
 public:
@@ -66,7 +69,7 @@ public:
 		size_t ip1 = (i + 1) % 3;
 		size_t ip2 = (i + 2) % 3;
 
-		return el[ip1] * er[ip2] - el[ip2] * er[ip1];
+		return el(ip1, 0) * er(ip2, 0) - el(ip2, 0) * er(ip1, 0);
 	}
 
 	T operator()(size_t i, size_t) const
@@ -74,6 +77,12 @@ public:
 		return (*this)[i];
 	}
 };
+
+template<class EL, class ER, typename T>
+inline Vector3DCrossProduct<EL, ER, T> operator^(const StaticMatrixBase<EL, T, 3, 1>& el, const StaticMatrixBase<ER, T, 3, 1>& er)
+{
+	return Vector3DCrossProduct<EL, ER, T>(static_cast<const EL&>(el), static_cast<const ER&>(er));
+}
 
 template<class EL, class ER, typename T>
 inline Vector3DCrossProduct<EL, ER, T> operator^(const MatrixExpression<EL, T>& el, const MatrixExpression<ER, T>& er)

@@ -2,25 +2,27 @@
 
 #include <cmath>
 
-#include "_Matrix/MatrixExpression.h"
+#include "_Matrix/StaticMatrixBase.h"
 
 template<class Derived, typename T, size_t N>
-class VectorBase : public MatrixExpression<Derived, T>
+class VectorBase : public StaticMatrixBase<Derived, T, N, 1>
 {
 public:
 	T operator[](size_t i) const { return this->Derived()[i]; }
 
-	constexpr size_t Line()   const { return N; }
-	constexpr size_t Column() const { return 1; }
-
-	T Norm() const
+	T SquareNorm() const
 	{
 		T norm = 0;
 
 		for (size_t i = 0; i < N; ++i)
 			norm += (*this)[i] * (*this)[i];
 
-		return std::sqrt(norm);
+		return norm;
+	}
+
+	T Norm() const
+	{		
+		return std::sqrt(this->SquareNorm());
 	}
 };
 
