@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "_Matrix/StaticMatrixBase.h"
+#include "../_Matrix/StaticMatrixBase.h"
 
 template<class Derived, typename T, size_t N>
 class VectorBase : public StaticMatrixBase<Derived, T, N, 1>
