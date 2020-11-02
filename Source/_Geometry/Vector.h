@@ -105,7 +105,7 @@ typedef VectorND<double , 2, RegularVector>     Vector2Dd;
 typedef VectorND<double , 2, HomogeneousVector> HVector2Dd;
 
 template<class EL, class ER, typename T>
-class Vector3DCrossProduct : public MatrixExpression<Vector3DCrossProduct<EL, ER, T>, T>
+class Vector3DCrossProduct : public StaticMatrixBase<Vector3DCrossProduct<EL, ER, T>, T, 3, 1>
 {
 public:
 	T operator[](size_t i) const
