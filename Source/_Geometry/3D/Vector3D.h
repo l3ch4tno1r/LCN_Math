@@ -1,10 +1,13 @@
 #pragma once
 
 #include "../VectorBase.h"
+#include "../../_Matrix/StaticMatrix.h"
 
 template<typename T>
-struct Vector3D : public VectorBase<Vector3D<T>, T, 3>
+struct Vector3D : public VectorND<Vector3D<T>, T, 3>
 {
+	using HVectorType = StaticMatrix<T, 4, 1>;
+
 	union
 	{
 		struct
@@ -43,10 +46,15 @@ struct Vector3D : public VectorBase<Vector3D<T>, T, 3>
 
 	constexpr size_t Line()   const { return 3; }
 	constexpr size_t Column() const { return 1; }
+
+	HVectorType Homogenous() const
+	{
+		return HVectorType({ x, y, z, T(1) });
+	}
 };
 
 template<class EL, class ER, typename T>
-class Vector3DCrossProduct : public VectorBase<Vector3DCrossProduct<EL, ER, T>, T, 3>
+class Vector3DCrossProduct : public VectorND<Vector3DCrossProduct<EL, ER, T>, T, 3>
 {
 private:
 	const EL& el;

@@ -147,7 +147,7 @@
     <ClInclude Include="Source\Utilities\ErrorHandling.h" />
     <ClInclude Include="Source\_Geometry\3D\HVector3D.h" />
     <ClInclude Include="Source\_Geometry\3D\Vector3D.h" />
-    <ClInclude Include="Source\_Geometry\VectorBase.h" />
+    <ClInclude Include="Source\_Geometry\Vector.h" />
     <ClInclude Include="Source\_Matrix\MatrixBase.h" />
     <ClInclude Include="Source\_Matrix\MatrixExpression.h" />
     <ClInclude Include="Source\_Matrix\StaticMatrix.h" />

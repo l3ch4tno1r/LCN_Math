@@ -3,7 +3,7 @@
 #include "../VectorBase.h"
 
 template<typename T>
-struct HVector3D : public VectorBase<HVector3D<T>, T, 3>
+struct HVector3D : public VectorND<HVector3D<T>, T, 3>
 {
 	union
 	{

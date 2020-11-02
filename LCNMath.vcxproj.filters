@@ -21,9 +21,6 @@
     <ClInclude Include="Source\_Geometry\3D\Vector3D.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\_Geometry\VectorBase.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Source\_Matrix\MatrixBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -67,6 +64,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utilities\ErrorHandling.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\_Geometry\Vector.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
