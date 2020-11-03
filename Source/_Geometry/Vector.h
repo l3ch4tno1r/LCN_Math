@@ -10,10 +10,15 @@ enum VectorType
 	HomogeneousVector
 };
 
+////////////////////////
+//-- VectorND class --//
+////////////////////////
+
 template<typename T, size_t N, VectorType VecType = RegularVector>
 class VectorND : public StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>
 {
 public:
+	using RVectorType = VectorND<T, N, RegularVector>;
 	using HVectorType = VectorND<T, N, HomogeneousVector>;
 	using BaseType    = StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>;
 
@@ -32,6 +37,16 @@ public:
 	VectorND(const MatrixExpression<E, ValType>& e) :
 		BaseType(e)
 	{}
+
+	VectorND(const RVectorType& other, T w)
+	{
+		static_assert(VecType == HomogeneousVector);
+
+		for (int i = 0; i < other.Line(); i++)
+			(*this)[i] = other[i];
+
+		this->w() = w;
+	}
 
 	RefType operator[](size_t i) { return (*this)(i, 0); }
 	ValType operator[](size_t i) const { return (*this)(i, 0); }
@@ -65,11 +80,11 @@ public:
 		return std::sqrt(this->SquareNorm());
 	}
 
-	HVectorType Homogeneous() const
+	HVectorType Homogeneous(T w = T(1)) const
 	{
 		static_assert(VecType == RegularVector, "Cannot convert homogeneous vector.");
 
-		return ;
+		return HVectorType(*this, w);
 	}
 
 public:
@@ -79,9 +94,9 @@ public:
 	static const bool cm_W_Accessible = VecType == HomogeneousVector;
 };
 
-/////////////////////////////
-//-- External operations --//
-/////////////////////////////
+/////////////////////
+//-- Dot product --//
+/////////////////////
 
 template<typename T, size_t N>
 T operator|(const VectorND<T, N>& a, const VectorND<T, N>& b)
@@ -103,6 +118,10 @@ typedef VectorND<float,   2, RegularVector>     Vector2Df;
 typedef VectorND<float,   2, HomogeneousVector> HVector2Df;
 typedef VectorND<double , 2, RegularVector>     Vector2Dd;
 typedef VectorND<double , 2, HomogeneousVector> HVector2Dd;
+
+///////////////////////
+//-- Cross product --//
+///////////////////////
 
 template<class EL, class ER, typename T>
 class Vector3DCrossProduct : public StaticMatrixBase<Vector3DCrossProduct<EL, ER, T>, T, 3, 1>

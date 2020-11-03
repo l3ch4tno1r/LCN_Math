@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../VectorBase.h"
+#include "../Vector.h"
 #include "../../_Matrix/StaticMatrix.h"
 
 template<typename T>
