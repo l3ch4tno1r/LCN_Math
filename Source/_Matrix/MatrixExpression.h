@@ -51,6 +51,12 @@ std::ostream& operator<<(std::ostream& stream, const MatrixExpression<E, T>& mat
 template<class EL, class ER, typename T>
 class MatrixAdd : public MatrixExpression<MatrixAdd<EL, ER, T>, T>
 {
+public:
+	T operator()(size_t i, size_t j) const { return el(i, j) + er(i, j); }
+
+	size_t Line()   const { return el.Line(); }
+	size_t Column() const { return el.Column(); }
+
 private:
 	const EL& el;
 	const ER& er;
@@ -62,13 +68,6 @@ private:
 
 	template<class EL, class ER, typename T>
 	friend MatrixAdd<EL, ER, T> operator+(const MatrixExpression<EL, T>& el, const MatrixExpression<ER, T>& er);
-
-public:
-
-	T operator()(size_t i, size_t j) const { return el(i, j) + er(i, j); }
-
-	size_t Line()   const { return el.Line(); }
-	size_t Column() const { return el.Column(); }
 };
 
 template<class EL, class ER, typename T>

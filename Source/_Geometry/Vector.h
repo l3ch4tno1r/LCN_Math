@@ -109,14 +109,14 @@ T operator|(const VectorND<T, N>& a, const VectorND<T, N>& b)
 	return dotproduct;
 }
 
-typedef VectorND<float,   3, RegularVector>     Vector3Df;
+typedef VectorND<float,   3, RegularVector>      Vector3Df;
 typedef VectorND<float,   3, HomogeneousVector> HVector3Df;
-typedef VectorND<double , 3, RegularVector>     Vector3Dd;
+typedef VectorND<double , 3, RegularVector>      Vector3Dd;
 typedef VectorND<double , 3, HomogeneousVector> HVector3Dd;
 
-typedef VectorND<float,   2, RegularVector>     Vector2Df;
+typedef VectorND<float,   2, RegularVector>      Vector2Df;
 typedef VectorND<float,   2, HomogeneousVector> HVector2Df;
-typedef VectorND<double , 2, RegularVector>     Vector2Dd;
+typedef VectorND<double , 2, RegularVector>      Vector2Dd;
 typedef VectorND<double , 2, HomogeneousVector> HVector2Dd;
 
 ///////////////////////

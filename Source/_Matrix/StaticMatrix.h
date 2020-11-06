@@ -10,10 +10,7 @@ class StaticMatrix : public StaticMatrixBase<StaticMatrix<T, L, C>, T, L, C>
 public:
 	using ValType = T;
 	using PtrType = T*;
-	using RefType = T& ;
-
-private:
-	ValType m_Tab[L][C];
+	using RefType = T&;
 
 public:
 	StaticMatrix() = default;
@@ -57,10 +54,16 @@ public:
 	}
 
 	RefType operator()(size_t i, size_t j) { return m_Tab[i][j]; }
-	ValType operator()(size_t i, size_t j) const { return m_Tab[i][j]; }
+	ValType operator()(size_t i, size_t j) const
+	{
+		return m_Tab[i][j];
+	}
 
 	static StaticMatrix<ValType, L, 2 * C> Matrix2C()
 	{
 		return StaticMatrix<ValType, L, 2 * C>();
 	}
+
+private:
+	ValType m_Tab[L][C];
 };
