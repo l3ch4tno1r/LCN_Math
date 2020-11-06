@@ -21,10 +21,11 @@ public:
 	using RVectorType = VectorND<T, N, RegularVector>;
 	using HVectorType = VectorND<T, N, HomogeneousVector>;
 	using BaseType    = StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>;
+	using RVectorView = StaticMatrixView<HVectorType, T, N, 1>;
 
 	using ValType = T;
-	using PtrType = T * ;
-	using RefType = T & ;
+	using PtrType = T*;
+	using RefType = T&;
 
 public:
 	VectorND() = default;
@@ -85,6 +86,13 @@ public:
 		static_assert(VecType == RegularVector, "Cannot convert homogeneous vector.");
 
 		return HVectorType(*this, w);
+	}
+
+	RVectorView VectorView() const
+	{
+		static_assert(VecType == HomogeneousVector, "Cannot use it with regular vector.");
+
+		return RVectorView(*this, 0, 0);
 	}
 
 public:
