@@ -54,10 +54,7 @@ public:
 	}
 
 	RefType operator()(size_t i, size_t j) { return m_Tab[i][j]; }
-	ValType operator()(size_t i, size_t j) const
-	{
-		return m_Tab[i][j];
-	}
+	ValType operator()(size_t i, size_t j) const { return m_Tab[i][j]; }
 
 	static StaticMatrix<ValType, L, 2 * C> Matrix2C()
 	{
