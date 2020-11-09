@@ -27,6 +27,20 @@ public:
 	}
 };
 
+template<class Derived, typename T, size_t L, size_t C>
+class Traits<StaticMatrixBase<Derived, T, L, C>>
+{
+public:
+	enum
+	{
+		DimAtCT    = true,
+		LineAtCT   = L,
+		ColumnAtCT = C
+	};
+
+	using ValType = T;
+};
+
 template<class Subject, typename T, size_t L, size_t C>
 class StaticMatrixView : public StaticMatrixBase<StaticMatrixView<Subject, T, L, C>, T, L, C>
 {
@@ -61,3 +75,7 @@ private:
 	size_t m_X_Offset;
 	size_t m_Y_Offset;
 };
+
+template<class Subject, typename T, size_t L, size_t C>
+class Traits<StaticMatrixView<Subject, T, L, C>> : public Traits<StaticMatrixBase<StaticMatrixView<Subject, T, L, C>, T, L, C>>
+{};

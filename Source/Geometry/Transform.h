@@ -42,7 +42,7 @@ public:
 	}
 
 	template<class E>
-	Transform(const MatrixExpression<E, ValType>& other)
+	Transform(const MatrixExpression<E>& other)
 	{
 		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 
@@ -52,7 +52,7 @@ public:
 	}
 
 	template<class E>
-	Transform& operator=(const MatrixExpression<E, ValType>& other)
+	Transform& operator=(const MatrixExpression<E>& other)
 	{
 		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 
@@ -66,6 +66,18 @@ public:
 
 	HVectorNDT& operator[](size_t i) { return m_Vectors[i]; }
 	const HVectorNDT& operator[](size_t i) const { return m_Vectors[i]; }
+
+	HVectorNDT& Ru() { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
+	const HVectorNDT& Ru() const { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
+
+	HVectorNDT& Rv() { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
+	const HVectorNDT& Rv() const { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
+
+	HVectorNDT& Rw() { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
+	const HVectorNDT& Rw() const { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
+
+	HVectorNDT& Tr() { return m_Vectors[Dim]; }
+	const HVectorNDT& Tr() const { return m_Vectors[Dim]; }
 
 public:
 	static const Transform& Identity()
@@ -81,7 +93,20 @@ public:
 
 private:
 	HVectorNDT m_Vectors[HDim];
+
+	enum
+	{
+		cm_Ru_Accessible = N >= 1,
+		cm_Rv_Accessible = N >= 2,
+		cm_Rw_Accessible = N >= 3
+	};
 };
 
-typedef Transform<float, 3>  Transform3Df;
+template<typename T, size_t N>
+class Traits<Transform<T, N>> : public Traits<StaticMatrixBase<Transform<T, N>, T, N + 1, N + 1>>
+{};
+
+typedef Transform<float,  2> Transform2Df;
+typedef Transform<double, 2> Transform2Dd;
+typedef Transform<float,  3> Transform3Df;
 typedef Transform<double, 3> Transform3Dd;

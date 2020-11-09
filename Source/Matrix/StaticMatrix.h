@@ -34,7 +34,7 @@ public:
 	}
 
 	template<class E>
-	StaticMatrix(const MatrixExpression<E, ValType>& other)
+	StaticMatrix(const MatrixExpression<E>& other)
 	{
 		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 
@@ -44,7 +44,7 @@ public:
 	}
 
 	template<class E>
-	StaticMatrix& operator=(const MatrixExpression<E, ValType>& other)
+	StaticMatrix& operator=(const MatrixExpression<E>& other)
 	{
 		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 
@@ -64,3 +64,7 @@ public:
 private:
 	ValType m_Tab[L][C];
 };
+
+template<typename T, size_t L, size_t C>
+class Traits<StaticMatrix<T, L, C>> : public Traits<StaticMatrixBase<StaticMatrix<T, L, C>, T, L, C>>
+{};

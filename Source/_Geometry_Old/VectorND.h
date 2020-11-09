@@ -68,7 +68,7 @@ namespace LCNMath{
 		template<typename T, uint N>
 		T operator|(const VectorND<T, N>& vec1, const VectorND<T, N>& vec2)
 		{
-			float dotproduct = 0.0f;
+			T dotproduct(0);
 		
 			for (uint i = 0; i < N; i++)
 				dotproduct += vec1(i, 0) * vec2(i, 0);

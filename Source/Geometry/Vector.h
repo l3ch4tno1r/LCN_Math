@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "../_Matrix/StaticMatrix.h"
+#include "../Matrix/StaticMatrix.h"
 
 enum VectorType
 {
@@ -18,10 +18,16 @@ template<typename T, size_t N, VectorType VecType = RegularVector>
 class VectorND : public StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>
 {
 public:
-	using RVectorType = VectorND<T, N, RegularVector>;
-	using HVectorType = VectorND<T, N, HomogeneousVector>;
-	using BaseType    = StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>;
-	using RVectorView = StaticMatrixView<HVectorType, T, N, 1>;
+	enum
+	{
+		Dim  = N,
+		HDim = N + 1
+	};
+
+	using RVectorType = VectorND<T, Dim, RegularVector>;
+	using HVectorType = VectorND<T, Dim, HomogeneousVector>;
+	using BaseType    = StaticMatrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
+	using RVectorView = StaticMatrixView<HVectorType, T, Dim, 1>;
 
 	using ValType = T;
 	using PtrType = T*;
@@ -30,12 +36,18 @@ public:
 public:
 	VectorND() = default;
 
+	VectorND(size_t I)
+	{
+		for (size_t i = 0; i < this->Line(); ++i)
+			(*this)[i] = (i == I ? ValType(1) : ValType(0));
+	}
+
 	VectorND(const std::initializer_list<T>& list) :
 		BaseType(list)
 	{}
 
 	template<class E>
-	VectorND(const MatrixExpression<E, ValType>& e) :
+	VectorND(const MatrixExpression<E>& e) :
 		BaseType(e)
 	{}
 
@@ -61,16 +73,16 @@ public:
 	ValType z() const { static_assert(cm_Z_Accessible); return (*this)[2]; }
 	RefType z() { static_assert(cm_Z_Accessible); return (*this)[2]; }
 
-	ValType w() const { static_assert(cm_W_Accessible); return (*this)[N]; }
-	RefType w() { static_assert(cm_W_Accessible); return (*this)[N]; }
+	ValType w() const { static_assert(cm_W_Accessible); return (*this)[Dim]; }
+	RefType w() { static_assert(cm_W_Accessible); return (*this)[Dim]; }
 
 	ValType SquareNorm() const
 	{
-		static_assert(VecType == RegularVector, "Cannot perform norm calculation on homogeneous vector.");
+		//static_assert(VecType == RegularVector, "Cannot perform norm calculation on homogeneous vector.");
 
 		T norm = 0;
 
-		for (size_t i = 0; i < N; ++i)
+		for (size_t i = 0; i < Dim; ++i)
 			norm += (*this)[i] * (*this)[i];
 
 		return norm;
@@ -95,42 +107,69 @@ public:
 		return RVectorView(*this, 0, 0);
 	}
 
+	RVectorType Vector() const
+	{
+		return RVectorType(this->VectorView());
+	}
+
 public:
-	static const bool cm_X_Accessible = N >= 1;
-	static const bool cm_Y_Accessible = N >= 2;
-	static const bool cm_Z_Accessible = N >= 3;
-	static const bool cm_W_Accessible = VecType == HomogeneousVector;
+	enum
+	{
+		cm_X_Accessible = Dim >= 1,
+		cm_Y_Accessible = Dim >= 2,
+		cm_Z_Accessible = Dim >= 3,
+		cm_W_Accessible = VecType == HomogeneousVector
+	};
+
+	template<size_t i>
+	static const VectorND& UnitVector()
+	{
+		static VectorND unitvector(i);
+		return unitvector;
+	}
+
+	static const VectorND& X() { static_assert(cm_X_Accessible); return UnitVector<0>(); }
+	static const VectorND& Y() { static_assert(cm_Y_Accessible); return UnitVector<1>(); }
+	static const VectorND& Z() { static_assert(cm_Z_Accessible); return UnitVector<2>(); }
 };
+
+template<typename T, size_t N>
+using HVectorND = VectorND<T, N, HomogeneousVector>;
+
+template<typename T, size_t N, VectorType VecType>
+class Traits<VectorND<T, N, VecType>> : public Traits<StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>>
+{};
 
 /////////////////////
 //-- Dot product --//
 /////////////////////
 
-template<typename T, size_t N>
-T operator|(const VectorND<T, N>& a, const VectorND<T, N>& b)
+template<typename T, size_t N, VectorType VecType>
+T operator|(const VectorND<T, N, VecType>& a, const VectorND<T, N, VecType>& b)
 {
-	T dotproduct = 0;
+	T dotproduct(0);
 
-	for (size_t i = 0; i < N; ++i)
+	for (size_t i = 0; i < a.Dim; ++i)
 		dotproduct += a[i] * b[i];
 
 	return dotproduct;
 }
 
-typedef VectorND<float,   3, RegularVector>      Vector3Df;
-typedef VectorND<float,   3, HomogeneousVector> HVector3Df;
-typedef VectorND<double , 3, RegularVector>      Vector3Dd;
-typedef VectorND<double , 3, HomogeneousVector> HVector3Dd;
+typedef VectorND<float,  3, RegularVector>      Vector3Df;
+typedef VectorND<float,  3, HomogeneousVector> HVector3Df;
+typedef VectorND<double, 3, RegularVector>      Vector3Dd;
+typedef VectorND<double, 3, HomogeneousVector> HVector3Dd;
 
-typedef VectorND<float,   2, RegularVector>      Vector2Df;
-typedef VectorND<float,   2, HomogeneousVector> HVector2Df;
-typedef VectorND<double , 2, RegularVector>      Vector2Dd;
-typedef VectorND<double , 2, HomogeneousVector> HVector2Dd;
+typedef VectorND<float,  2, RegularVector>      Vector2Df;
+typedef VectorND<float,  2, HomogeneousVector> HVector2Df;
+typedef VectorND<double, 2, RegularVector>      Vector2Dd;
+typedef VectorND<double, 2, HomogeneousVector> HVector2Dd;
 
 ///////////////////////
 //-- Cross product --//
 ///////////////////////
 
+/*
 template<class EL, class ER, typename T>
 class Vector3DCrossProduct : public StaticMatrixBase<Vector3DCrossProduct<EL, ER, T>, T, 3, 1>
 {
@@ -177,3 +216,4 @@ inline Vector3DCrossProduct<EL, ER, T> operator^(const MatrixExpression<EL, T>& 
 
 	return Vector3DCrossProduct<EL, ER, T>(static_cast<const EL&>(el), static_cast<const ER&>(er));
 }
+*/

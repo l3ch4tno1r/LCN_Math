@@ -5,7 +5,7 @@
 #include "MatrixExpression.h"
 
 template<class Derived, typename T>
-class MatrixBase : public MatrixExpression<Derived, T>
+class MatrixBase : public MatrixExpression<Derived>
 {
 public:
 	T& operator()(size_t i, size_t j) { return this->Derived()(i, j); }
