@@ -33,7 +33,7 @@ class Traits<StaticMatrixBase<Derived, T, L, C>>
 public:
 	enum
 	{
-		DimAtCT    = true,
+		SizeAtCT   = true,
 		LineAtCT   = L,
 		ColumnAtCT = C
 	};

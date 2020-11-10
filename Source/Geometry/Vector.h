@@ -55,7 +55,7 @@ public:
 	{
 		static_assert(VecType == HomogeneousVector);
 
-		for (int i = 0; i < other.Line(); i++)
+		for (size_t i = 0; i < other.Line(); i++)
 			(*this)[i] = other[i];
 
 		this->w() = w;
@@ -64,17 +64,17 @@ public:
 	RefType operator[](size_t i) { return (*this)(i, 0); }
 	ValType operator[](size_t i) const { return (*this)(i, 0); }
 
-	ValType x() const { static_assert(cm_X_Accessible); return (*this)[0]; }
-	RefType x()	{ static_assert(cm_X_Accessible); return (*this)[0]; }
+	ValType x() const { static_assert(X_Accessible); return (*this)[0]; }
+	RefType x()	{ static_assert(X_Accessible); return (*this)[0]; }
 
-	ValType y() const { static_assert(cm_Y_Accessible); return (*this)[1]; }
-	RefType y()	{ static_assert(cm_Y_Accessible); return (*this)[1]; }
+	ValType y() const { static_assert(Y_Accessible); return (*this)[1]; }
+	RefType y()	{ static_assert(Y_Accessible); return (*this)[1]; }
 
-	ValType z() const { static_assert(cm_Z_Accessible); return (*this)[2]; }
-	RefType z() { static_assert(cm_Z_Accessible); return (*this)[2]; }
+	ValType z() const { static_assert(Z_Accessible); return (*this)[2]; }
+	RefType z() { static_assert(Z_Accessible); return (*this)[2]; }
 
-	ValType w() const { static_assert(cm_W_Accessible); return (*this)[Dim]; }
-	RefType w() { static_assert(cm_W_Accessible); return (*this)[Dim]; }
+	ValType w() const { static_assert(W_Accessible); return (*this)[Dim]; }
+	RefType w() { static_assert(W_Accessible); return (*this)[Dim]; }
 
 	ValType SquareNorm() const
 	{
@@ -115,10 +115,10 @@ public:
 public:
 	enum
 	{
-		cm_X_Accessible = Dim >= 1,
-		cm_Y_Accessible = Dim >= 2,
-		cm_Z_Accessible = Dim >= 3,
-		cm_W_Accessible = VecType == HomogeneousVector
+		X_Accessible = Dim >= 1,
+		Y_Accessible = Dim >= 2,
+		Z_Accessible = Dim >= 3,
+		W_Accessible = VecType == HomogeneousVector
 	};
 
 	template<size_t i>
@@ -128,9 +128,9 @@ public:
 		return unitvector;
 	}
 
-	static const VectorND& X() { static_assert(cm_X_Accessible); return UnitVector<0>(); }
-	static const VectorND& Y() { static_assert(cm_Y_Accessible); return UnitVector<1>(); }
-	static const VectorND& Z() { static_assert(cm_Z_Accessible); return UnitVector<2>(); }
+	static const VectorND& X() { static_assert(X_Accessible); return UnitVector<0>(); }
+	static const VectorND& Y() { static_assert(Y_Accessible); return UnitVector<1>(); }
+	static const VectorND& Z() { static_assert(Z_Accessible); return UnitVector<2>(); }
 };
 
 template<typename T, size_t N>

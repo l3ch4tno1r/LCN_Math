@@ -24,7 +24,7 @@ public:
 	{
 		LineAtCT   = Traits<E>::LineAtCT,
 		ColumnAtCT = Traits<E>::ColumnAtCT,
-		DimAtCT    = Traits<E>::DimAtCT,
+		SizeAtCT   = Traits<E>::SizeAtCT,
 	};
 
 	using ValType = typename Traits<E>::ValType;
@@ -90,7 +90,7 @@ class Traits<BinaryOperation<Derived, EL, ER>>
 public:
 	enum
 	{
-		DimAtCT = Traits<EL>::DimAtCT && Traits<EL>::DimAtCT
+		SizeAtCT = Traits<EL>::SizeAtCT && Traits<EL>::SizeAtCT
 	};
 
 	using ValType = typename BinaryOpReturnType<EL, ER>::ValType;
@@ -137,7 +137,7 @@ public:
 template<class _EL, class _ER>
 inline AddOperation<_EL, _ER> operator+(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er)
 {
-	if constexpr (Traits<AddOperation<_EL, _ER>>::DimAtCT)
+	if constexpr (Traits<AddOperation<_EL, _ER>>::SizeAtCT)
 		static_assert(Traits<AddOperation<_EL, _ER>>::LineAtCT != -1 && Traits<AddOperation<_EL, _ER>>::ColumnAtCT != -1);
 	else
 		ASSERT(el.Line() == er.Line() && el.Column() == er.Column());
@@ -187,7 +187,7 @@ public:
 template<class _EL, class _ER>
 inline SubOperation<_EL, _ER> operator-(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er)
 {
-	if constexpr (Traits<SubOperation<_EL, _ER>>::DimAtCT)
+	if constexpr (Traits<SubOperation<_EL, _ER>>::SizeAtCT)
 		static_assert(Traits<SubOperation<_EL, _ER>>::LineAtCT != -1 && Traits<SubOperation<_EL, _ER>>::ColumnAtCT != -1);
 	else
 		ASSERT(el.Line() == er.Line() && el.Column() == er.Column());
@@ -245,7 +245,7 @@ public:
 template<class _EL, class _ER>
 inline MultOperation<_EL, _ER> operator*(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er)
 {
-	if constexpr (Traits<MultOperation<_EL, _ER>>::DimAtCT)
+	if constexpr (Traits<MultOperation<_EL, _ER>>::SizeAtCT)
 		static_assert(Traits<_EL>::ColumnAtCT == Traits<_ER>::LineAtCT);
 	else
 		ASSERT(el.Column() == er.Line());
@@ -316,7 +316,7 @@ class Traits<ScaleOperation<E>>
 public:
 	enum
 	{
-		DimAtCT    = Traits<E>::DimAtCT,
+		SizeAtCT   = Traits<E>::SizeAtCT,
 		LineAtCT   = Traits<E>::LineAtCT,
 		ColumnAtCT = Traits<E>::ColumnAtCT
 	};
