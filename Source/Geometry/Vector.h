@@ -27,7 +27,7 @@ public:
 	using RVectorType = VectorND<T, Dim, RegularVector>;
 	using HVectorType = VectorND<T, Dim, HomogeneousVector>;
 	using BaseType    = StaticMatrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
-	using RVectorView = StaticMatrixView<HVectorType, T, Dim, 1>;
+	using RVectorView = StaticMatrixView<HVectorType, Dim, 1>;
 
 	using ValType = T;
 	using PtrType = T*;

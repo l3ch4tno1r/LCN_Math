@@ -3,7 +3,7 @@
 #include "Vector.h"
 
 template<typename T, size_t N>
-class Transform : public StaticMatrixBase<Transform<T, N>, T, N + 1, N + 1>
+class Transform : public StaticMatrixBase<Transform<T, N>, N + 1, N + 1>
 {
 public:
 	enum
@@ -103,8 +103,11 @@ private:
 };
 
 template<typename T, size_t N>
-class Traits<Transform<T, N>> : public Traits<StaticMatrixBase<Transform<T, N>, T, N + 1, N + 1>>
-{};
+class Traits<Transform<T, N>> : public Traits<StaticMatrixBase<Transform<T, N>, N + 1, N + 1>>
+{
+public:
+	using ValType = T;
+};
 
 typedef Transform<float,  2> Transform2Df;
 typedef Transform<double, 2> Transform2Dd;

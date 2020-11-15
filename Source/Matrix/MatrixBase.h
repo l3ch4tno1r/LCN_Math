@@ -4,11 +4,14 @@
 
 #include "MatrixExpression.h"
 
-template<class Derived, typename T>
+template<class Derived>
 class MatrixBase : public MatrixExpression<Derived>
 {
 public:
-	T& operator()(size_t i, size_t j) { return this->Derived()(i, j); }
+	using ValType = typename Traits<Derived>::ValType;
+	using RefType = ValType&;
+
+	RefType operator()(size_t i, size_t j) { return this->Derived()(i, j); }
 
 	/////////////////
 	//-- Methods --//
@@ -19,7 +22,7 @@ public:
 		if (i >= this->Line() || j >= this->Line())
 			throw std::out_of_range("Index out of range.");
 
-		T temp;
+		ValType temp;
 
 		for (int k = 0; k < this->Column(); k++)
 		{
@@ -30,7 +33,7 @@ public:
 		}
 	}
 
-	void ScaleLine(size_t idx, T scalefactor)
+	void ScaleLine(size_t idx, ValType scalefactor)
 	{
 		if (idx >= this->Line())
 			throw std::out_of_range("Index out of range.");
@@ -39,7 +42,7 @@ public:
 			this->Derived()(idx, j) *= scalefactor;
 	}
 
-	void CombineLines(size_t idx1, T factor1, size_t idx2, T factor2)
+	void CombineLines(size_t idx1, ValType factor1, size_t idx2, ValType factor2)
 	{
 		if (idx1 >= this->Line() || idx2 >= this->Line())
 			throw std::out_of_range("Index out of range.");
@@ -48,11 +51,11 @@ public:
 			this->Derived()(idx1, j) = factor1 * this->Derived()(idx1, j) + factor2 * this->Derived()(idx2, j);
 	}
 
-	T GaussElimination()
+	ValType GaussElimination()
 	{
-		size_t linepivot    = 0;
-		size_t permutations = 0;
-		T      pseudodet(1);
+		size_t  linepivot    = 0;
+		size_t  permutations = 0;
+		ValType pseudodet(1);
 
 		size_t L = this->Line();
 		size_t C = this->Column();
@@ -60,8 +63,8 @@ public:
 		for (size_t j = 0; j < std::min(L, C); j++)
 		{
 			// Recherche du pivot
-			T   max = 0;
-			int maxpos = 0;
+			ValType max = 0;
+			int     maxpos = 0;
 
 			for (size_t i = linepivot; i < L; i++)
 			{
@@ -74,11 +77,11 @@ public:
 
 			// maxpos est le pivot
 			if (this->Derived()(maxpos, j) == 0)
-				return T(0);
+				return ValType(0);
 
 			pseudodet *= this->Derived()(maxpos, j);
 
-			ScaleLine(maxpos, T(1) / (this->Derived()(maxpos, j)));
+			ScaleLine(maxpos, ValType(1) / (this->Derived()(maxpos, j)));
 
 			if (maxpos != j)
 			{
@@ -88,12 +91,12 @@ public:
 
 			for (size_t i = 0; i < L; i++)
 				if (i != linepivot)
-					CombineLines(i, T(1), linepivot, -(this->Derived()(i, j)));
+					CombineLines(i, ValType(1), linepivot, -(this->Derived()(i, j)));
 
 			linepivot++;
 		}
 
-		return (permutations % 2 == 0 ? T(1) : T(-1)) * pseudodet;
+		return (permutations % 2 == 0 ? ValType(1) : ValType(-1)) * pseudodet;
 	}
 
 	////////////////////////////////////////
@@ -104,11 +107,11 @@ public:
 
 	void AssertSquareMatrix() const { this->Derived().AssertSquareMatrix(); }
 
-	T Trace() const
+	ValType Trace() const
 	{
 		this->AssertSquareMatrix();
 
-		T result(T(0));
+		ValType result(0);
 
 		for (size_t i = 0; i < this->Line(); i++)
 			result += this->Derived()(i, i);
@@ -116,7 +119,7 @@ public:
 		return result;
 	}
 
-	T Det() const
+	ValType Det() const
 	{
 		this->AssertSquareMatrix();
 
@@ -140,11 +143,11 @@ public:
 
 		for (size_t i = 0; i < L; i++)
 			for (size_t j = C; j < 2 * C; j++)
-				temp(i, j) = (i == j - C ? T(1) : T(0));
+				temp(i, j) = (i == j - C ? ValType(1) : ValType(0));
 
-		T pseudodet = temp.GaussElimination();
+		ValType pseudodet = temp.GaussElimination();
 
-		if (std::abs(pseudodet) < T(0.0001))
+		if (std::abs(pseudodet) < ValType(0.0001))
 			throw std::exception("This matrix cannot be inverted.");
 
 		Derived result;

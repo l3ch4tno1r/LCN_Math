@@ -5,7 +5,7 @@
 #include "StaticMatrixBase.h"
 
 template<typename T, size_t L, size_t C>
-class StaticMatrix : public StaticMatrixBase<StaticMatrix<T, L, C>, T, L, C>
+class StaticMatrix : public StaticMatrixBase<StaticMatrix<T, L, C>, L, C>
 {
 public:
 	using ValType = T;
@@ -66,5 +66,8 @@ private:
 };
 
 template<typename T, size_t L, size_t C>
-class Traits<StaticMatrix<T, L, C>> : public Traits<StaticMatrixBase<StaticMatrix<T, L, C>, T, L, C>>
-{};
+class Traits<StaticMatrix<T, L, C>> : public Traits<StaticMatrixBase<StaticMatrix<T, L, C>, L, C>>
+{
+public:
+	using ValType = T;
+};

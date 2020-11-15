@@ -2,20 +2,22 @@
 
 #include "MatrixBase.h"
 
-template<class Subject, typename T, size_t L, size_t C>
+template<class Subject, size_t L, size_t C>
 class StaticMatrixView;
 
-template<class Derived, typename T, size_t L, size_t C>
-class StaticMatrixBase : public MatrixBase<Derived, T>
+template<class Derived, size_t L, size_t C>
+class StaticMatrixBase : public MatrixBase<Derived>
 {
 public:
+	using ValType = typename Traits<Derived>::ValType;
+
 	constexpr size_t Line()   const { return L; }
 	constexpr size_t Column() const { return C; }
 
 	static constexpr void AssertSquareMatrix() { static_assert(L == C, "This is not a square matrix."); }
 
 	template<size_t L1, size_t C1>
-	using ViewType = StaticMatrixView<Derived, T, L1, C1>;
+	using ViewType = StaticMatrixView<Derived, L1, C1>;
 
 	template<size_t L1, size_t C1>
 	ViewType<L1, C1> View(size_t xoffset, size_t yoffset) const
@@ -27,8 +29,8 @@ public:
 	}
 };
 
-template<class Derived, typename T, size_t L, size_t C>
-class Traits<StaticMatrixBase<Derived, T, L, C>>
+template<class Derived, size_t L, size_t C>
+class Traits<StaticMatrixBase<Derived, L, C>>
 {
 public:
 	enum
@@ -37,17 +39,15 @@ public:
 		LineAtCT   = L,
 		ColumnAtCT = C
 	};
-
-	using ValType = T;
 };
 
-template<class Subject, typename T, size_t L, size_t C>
-class StaticMatrixView : public StaticMatrixBase<StaticMatrixView<Subject, T, L, C>, T, L, C>
+template<class Subject, size_t L, size_t C>
+class StaticMatrixView : public StaticMatrixBase<StaticMatrixView<Subject, L, C>, L, C>
 {
 public:
-	using ValType = T;
-	using PtrType = T*;
-	using RefType = T&;
+	using ValType = typename Traits<Subject>::ValType;
+	using PtrType = ValType*;
+	using RefType = ValType&;
 
 public:
 	StaticMatrixView(const Subject& subject, size_t xoffset, size_t yoffset) :
@@ -76,6 +76,9 @@ private:
 	size_t m_Y_Offset;
 };
 
-template<class Subject, typename T, size_t L, size_t C>
-class Traits<StaticMatrixView<Subject, T, L, C>> : public Traits<StaticMatrixBase<StaticMatrixView<Subject, T, L, C>, T, L, C>>
-{};
+template<class Subject, size_t L, size_t C>
+class Traits<StaticMatrixView<Subject, L, C>> : public Traits<StaticMatrixBase<StaticMatrixView<Subject, L, C>, L, C>>
+{
+public:
+	using ValType = typename Traits<Subject>::ValType;
+};
