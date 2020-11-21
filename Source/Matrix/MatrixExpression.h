@@ -34,6 +34,9 @@ public:
 	size_t Line()   const { return this->Derived().Line(); }
 	size_t Column() const { return this->Derived().Column(); }
 
+	template<class _E>
+	bool ContainsRefTo(const _E& other) const { return this->Derived().ContainsRefTo(other); }
+
 protected:
 	inline E& Derived() { return static_cast<E&>(*this); }
 	inline const E& Derived() const { return static_cast<const E&>(*this); }
@@ -82,6 +85,17 @@ protected:
 		el(el),
 		er(er)
 	{}
+
+public:
+	template<class _E>
+	bool ContainsRefTo(const _E& other) const
+	{
+		return 
+		(void*)(&el) == (void*)(&other) || 
+		(void*)(&er) == (void*)(&other) ||
+		el.ContainsRefTo(other) ||
+		er.ContainsRefTo(other);
+	}
 };
 
 template<class Derived, class EL, class ER>
@@ -202,10 +216,10 @@ inline SubOperation<_EL, _ER> operator-(const MatrixExpression<_EL>& el, const M
 ////////////////////////
 
 template<class EL, class ER>
-class MultOperation : public BinaryOperation<MultOperation<EL, ER>, EL, ER>
+class ProductOperation : public BinaryOperation<ProductOperation<EL, ER>, EL, ER>
 {
 public:
-	using ThisType = MultOperation<EL, ER>;
+	using ThisType = ProductOperation<EL, ER>;
 	using Base     = BinaryOperation<ThisType, EL, ER>;
 	using ValType  = typename Base::ValType;
 
@@ -223,16 +237,16 @@ public:
 	size_t Column() const { return this->er.Column(); }
 
 private:
-	MultOperation(const EL& el, const ER& er) :
+	ProductOperation(const EL& el, const ER& er) :
 		Base(el, er)
 	{}
 
 	template<class _EL, class _ER>
-	friend MultOperation<_EL, _ER> operator*(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er);
+	friend ProductOperation<_EL, _ER> operator*(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er);
 };
 
 template<class EL, class ER>
-class Traits<MultOperation<EL, ER>> : public Traits<BinaryOperation<MultOperation<EL, ER>, EL, ER>>
+class Traits<ProductOperation<EL, ER>> : public Traits<BinaryOperation<ProductOperation<EL, ER>, EL, ER>>
 {
 public:
 	enum
@@ -243,14 +257,14 @@ public:
 };
 
 template<class _EL, class _ER>
-inline MultOperation<_EL, _ER> operator*(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er)
+inline ProductOperation<_EL, _ER> operator*(const MatrixExpression<_EL>& el, const MatrixExpression<_ER>& er)
 {
-	if constexpr (Traits<MultOperation<_EL, _ER>>::SizeAtCT)
+	if constexpr (Traits<ProductOperation<_EL, _ER>>::SizeAtCT)
 		static_assert(Traits<_EL>::ColumnAtCT == Traits<_ER>::LineAtCT);
 	else
 		ASSERT(el.Column() == er.Line());
 
-	return MultOperation<_EL, _ER>(static_cast<const _EL&>(el), static_cast<const _ER&>(er));
+	return ProductOperation<_EL, _ER>(static_cast<const _EL&>(el), static_cast<const _ER&>(er));
 }
 
 /////////////////
@@ -270,6 +284,9 @@ public:
 
 	size_t Line()   const { return e.Line(); }
 	size_t Column() const { return e.Column(); }
+
+	template<class _E>
+	bool ContainsRefTo(const _E& other) const { return &e == &other || e.ContainsRefTo(other); }
 
 private:
 	const E& e;
