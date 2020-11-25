@@ -13,6 +13,24 @@ public:
 
 	RefType operator()(size_t i, size_t j) { return this->Derived()(i, j); }
 
+	template<class E>
+	Derived& operator=(const MatrixExpression<E>& expr)
+	{
+		using t_Derived = Traits<Derived>;
+		using t_Expr    = MatrixExpression<E>;
+
+		if constexpr (t_Derived::SizeAtCT && t_Expr::SizeAtCT)
+			static_assert((t_Derived::LineAtCT == t_Expr::LineAtCT) && (t_Derived::ColumnAtCT == t_Expr::ColumnAtCT));
+		else
+			ASSERT((this->Line() == expr.Line()) && (this->Column() == expr.Column()));
+
+		for (size_t i = 0; i < expr.Line(); ++i)
+			for (size_t j = 0; j < expr.Column(); ++j)
+				(*this)(i, j) = expr(i, j);
+
+		return this->Derived();
+	}
+
 	/////////////////
 	//-- Methods --//
 	/////////////////

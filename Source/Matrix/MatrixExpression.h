@@ -104,7 +104,7 @@ class Traits<BinaryOperation<Derived, EL, ER>>
 public:
 	enum
 	{
-		SizeAtCT = Traits<EL>::SizeAtCT && Traits<EL>::SizeAtCT
+		SizeAtCT = Traits<EL>::SizeAtCT && Traits<ER>::SizeAtCT
 	};
 
 	using ValType = typename BinaryOpReturnType<EL, ER>::ValType;
