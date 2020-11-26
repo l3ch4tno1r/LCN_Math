@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <type_traits>
 
 #include "MatrixExpression.h"
 
@@ -94,6 +95,8 @@ public:
 
 	ValType GaussElimination()
 	{
+		static_assert(std::is_floating_point<ValType>::value, "ValType must be a floating point type.");
+
 		size_t  linepivot    = 0;
 		size_t  permutations = 0;
 		ValType pseudodet(1);

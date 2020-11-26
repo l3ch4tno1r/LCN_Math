@@ -10,9 +10,15 @@ template<typename T>
 class MatrixN : public MatrixBase<MatrixN<T>>
 {
 public:
+	using Base = MatrixBase<MatrixN<T>>;
+
 	using ValType = T;
-	using RefType = ValType & ;
-	using PtrType = ValType * ;
+	using RefType = ValType&;
+	using PtrType = ValType*;
+
+	//////////////
+	//-- ctor --//
+	//////////////
 
 	MatrixN() = default;
 
@@ -23,6 +29,46 @@ public:
 		m_Data = new ValType[m_Line * m_Column];
 	}
 
+	MatrixN(const MatrixN& other) :
+		m_Line(other.Line()),
+		m_Column(other.Column())
+	{
+		m_Data = new ValType[m_Line * m_Column];
+
+		Base::operator=(other);
+	}
+
+	MatrixN(MatrixN&& other) :
+		m_Line(other.Line()),
+		m_Column(other.Column())
+	{
+		m_Data = other.m_Data;
+
+		other.m_Data   = nullptr;
+		other.m_Line   = 0;
+		other.m_Column = 0;
+	}
+
+	MatrixN(size_t line, size_t column, const std::initializer_list<ValType>& values) :
+		MatrixN(line, column)
+	{
+		Base::operator=(values);
+	}
+
+	template<class E>
+	MatrixN(const MatrixExpression<E>& expr) :
+		m_Line(expr.Line()),
+		m_Column(expr.Column())
+	{
+		m_Data = new ValType[m_Line * m_Column];
+
+		Base::operator=(expr);
+	}
+
+	//////////////
+	//-- dtor --//
+	//////////////
+
 	~MatrixN()
 	{
 		if (m_Data)
@@ -30,6 +76,10 @@ public:
 
 		m_Data = nullptr;
 	}
+
+	///////////////////////////////
+	//-- Override base methods --//
+	///////////////////////////////
 
 	inline ValType operator()(size_t i, size_t j) const { return m_Data[i * m_Column + j]; }
 	inline RefType operator()(size_t i, size_t j) { return m_Data[i * m_Column + j]; }
@@ -43,11 +93,18 @@ public:
 			throw std::exception("This is not a square matrix.");
 	}
 
-private:
-	PtrType m_Data = nullptr;
+	///////////////////////////////
+	//-- Assignement operators --//
+	///////////////////////////////
 
-	size_t m_Line   = 0;
-	size_t m_Column = 0;
+	MatrixN& operator=(const MatrixN& other)
+	{
+		Base::operator=(other);
+	}
+
+	/////////////////
+	//-- Methods --//
+	/////////////////
 
 	void Resize(size_t line, size_t column)
 	{
@@ -56,7 +113,8 @@ private:
 
 		if (newsize > currentsize)
 		{
-			delete[] m_Data;
+			if (m_Data)
+				delete[] m_Data;
 
 			m_Data = new ValType[newsize];
 		}
@@ -64,6 +122,12 @@ private:
 		m_Line   = line;
 		m_Column = column;
 	}
+
+private:
+	PtrType m_Data = nullptr;
+
+	size_t m_Line   = 0;
+	size_t m_Column = 0;
 };
 
 template<typename T>

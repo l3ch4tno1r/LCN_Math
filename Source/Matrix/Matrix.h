@@ -29,9 +29,9 @@ public:
 		Base::operator=(expr);
 	}
 
-	//////////////////////////////
-	//-- Overriding from base --//
-	//////////////////////////////
+	///////////////////////////////
+	//-- Override base methods --//
+	///////////////////////////////
 
 	inline ValType operator()(size_t i, size_t j) const { return m_Data[i][j]; }
 	inline RefType operator()(size_t i, size_t j) { return m_Data[i][j]; }
@@ -85,3 +85,19 @@ public:
 /////////////////////////
 //-- Type definition --//
 /////////////////////////
+
+typedef Matrix<float, 2, 2> Matrix2f;
+typedef Matrix<float, 3, 3> Matrix3f;
+typedef Matrix<float, 4, 4> Matrix4f;
+
+typedef Matrix<double, 2, 2> Matrix2d;
+typedef Matrix<double, 3, 3> Matrix3d;
+typedef Matrix<double, 4, 4> Matrix4d;
+
+typedef Matrix<int, 2, 2> Matrix2i;
+typedef Matrix<int, 3, 3> Matrix3i;
+typedef Matrix<int, 4, 4> Matrix4i;
+
+typedef Matrix<unsigned int, 2, 2> Matrix2u;
+typedef Matrix<unsigned int, 3, 3> Matrix3u;
+typedef Matrix<unsigned int, 4, 4> Matrix4u;
