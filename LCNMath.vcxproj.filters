@@ -66,6 +66,9 @@
     <ClInclude Include="Source\_Matrix_Old\Stack\SqrSMatrix.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Matrix\MatrixN.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Matrix\Matrix.h">

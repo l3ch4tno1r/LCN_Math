@@ -11,7 +11,7 @@ public:
 	using ValType = typename Traits<Derived>::ValType;
 	using RefType = ValType&;
 
-	RefType operator()(size_t i, size_t j) { return this->Derived()(i, j); }
+	inline RefType operator()(size_t i, size_t j) { return this->Derived()(i, j); }
 
 	template<class E>
 	Derived& operator=(const MatrixExpression<E>& expr)
@@ -27,6 +27,29 @@ public:
 		for (size_t i = 0; i < expr.Line(); ++i)
 			for (size_t j = 0; j < expr.Column(); ++j)
 				(*this)(i, j) = expr(i, j);
+
+		return this->Derived();
+	}
+
+	Derived& operator=(const std::initializer_list<ValType>& values)
+	{
+		if constexpr (!Traits<Derived>::SizeAtCT)
+			ASSERT(this->Line() > 0 && this->Column() > 0);
+
+		size_t Idx = 0;
+
+		for (ValType e : values)
+		{
+			if (Idx > this->Line() * this->Column())
+				break;
+
+			size_t i = Idx / this->Column();
+			size_t j = Idx % this->Column();
+
+			(*this)(i, j) = e;
+
+			++Idx;
+		}
 
 		return this->Derived();
 	}
@@ -121,9 +144,9 @@ public:
 	//-- Square matrix specific methods --//
 	////////////////////////////////////////
 
-	bool IsSquareMatrix() const { return this->Line() == this->Column(); }
+	inline bool IsSquareMatrix() const { return this->Line() == this->Column(); }
 
-	void AssertSquareMatrix() const { this->Derived().AssertSquareMatrix(); }
+	inline void AssertSquareMatrix() const { this->Derived().AssertSquareMatrix(); }
 
 	ValType Trace() const
 	{
