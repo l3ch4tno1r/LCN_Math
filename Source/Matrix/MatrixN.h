@@ -24,26 +24,23 @@ public:
 
 	MatrixN(size_t line, size_t column) :
 		m_Line(line),
-		m_Column(column)
+		m_Column(column),
+		m_Capacity(line * column)
 	{
-		m_Data = new ValType[m_Line * m_Column];
+		m_Data = new ValType[m_Capacity];
 	}
 
 	MatrixN(const MatrixN& other) :
-		m_Line(other.Line()),
-		m_Column(other.Column())
+		MatrixN(other.m_Line, other.m_Column)
 	{
-		m_Data = new ValType[m_Line * m_Column];
-
 		Base::operator=(other);
 	}
 
 	MatrixN(MatrixN&& other) :
 		m_Line(other.Line()),
-		m_Column(other.Column())
+		m_Column(other.Column()),
+		m_Data(other.m_Data)
 	{
-		m_Data = other.m_Data;
-
 		other.m_Data   = nullptr;
 		other.m_Line   = 0;
 		other.m_Column = 0;
@@ -57,11 +54,8 @@ public:
 
 	template<class E>
 	MatrixN(const MatrixExpression<E>& expr) :
-		m_Line(expr.Line()),
-		m_Column(expr.Column())
+		MatrixN(expr.Line(), expr.Column())
 	{
-		m_Data = new ValType[m_Line * m_Column];
-
 		Base::operator=(expr);
 	}
 
@@ -97,37 +91,84 @@ public:
 	//-- Assignement operators --//
 	///////////////////////////////
 
-	MatrixN& operator=(const MatrixN& other)
+	inline MatrixN& operator=(const MatrixN& other)
 	{
-		Base::operator=(other);
+		this->Resize(other.m_Line, other.m_Column);
+
+		return Base::operator=(static_cast<const MatrixExpression<MatrixN>&>(other));
 	}
 
-	/////////////////
-	//-- Methods --//
-	/////////////////
+	inline MatrixN& operator=(MatrixN&& other)
+	{
+		if (this == &other)
+			return *this;
+
+		if (m_Data)
+			delete[] m_Data;
+
+		m_Line   = other.m_Line;
+		m_Column = other.m_Column;
+		m_Data   = other.m_Data;
+
+		other.m_Line   = 0;
+		other.m_Column = 0;
+		other.m_Data   = nullptr;
+
+		return *this;
+	}
+
+	template<class E>
+	inline MatrixN& operator=(const MatrixExpression<E>& expr)
+	{
+		this->Resize(expr.Line(), expr.Column());
+
+		return Base::operator=(expr);
+	}
+
+	///////////////////////////////////
+	//-- Memory management methods --//
+	///////////////////////////////////
 
 	void Resize(size_t line, size_t column)
 	{
-		size_t currentsize = m_Line * m_Column;
-		size_t newsize     = line * column;
+		size_t newsize = line * column;
 
-		if (newsize > currentsize)
+		if (newsize > m_Capacity)
 		{
 			if (m_Data)
 				delete[] m_Data;
 
 			m_Data = new ValType[newsize];
+
+			m_Capacity = newsize;
 		}
 
 		m_Line   = line;
 		m_Column = column;
 	}
 
+	void ShrinkToFit()
+	{
+		size_t size = m_Line * m_Column;
+
+		if (m_Capacity <= size)
+			return;
+
+		PtrType temp = m_Data;
+
+		m_Data = new ValType[size];
+
+		std::memcpy(m_Data, temp, size * sizeof(ValType));
+
+		delete[] temp;
+	}
+
 private:
 	PtrType m_Data = nullptr;
 
-	size_t m_Line   = 0;
-	size_t m_Column = 0;
+	size_t m_Line     = 0;
+	size_t m_Column   = 0;
+	size_t m_Capacity = 0;
 };
 
 template<typename T>
