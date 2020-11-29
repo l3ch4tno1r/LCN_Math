@@ -39,11 +39,13 @@ public:
 	MatrixN(MatrixN&& other) :
 		m_Line(other.Line()),
 		m_Column(other.Column()),
+		m_Capacity(other.m_Capacity),
 		m_Data(other.m_Data)
 	{
-		other.m_Data   = nullptr;
-		other.m_Line   = 0;
-		other.m_Column = 0;
+		other.m_Line     = 0;
+		other.m_Column   = 0;
+		other.m_Capacity = 0;
+		other.m_Data     = nullptr;
 	}
 
 	MatrixN(size_t line, size_t column, const std::initializer_list<ValType>& values) :
@@ -106,13 +108,15 @@ public:
 		if (m_Data)
 			delete[] m_Data;
 
-		m_Line   = other.m_Line;
-		m_Column = other.m_Column;
-		m_Data   = other.m_Data;
+		m_Line     = other.m_Line;
+		m_Column   = other.m_Column;
+		m_Capacity = other.m_Capacity;
+		m_Data     = other.m_Data;
 
-		other.m_Line   = 0;
-		other.m_Column = 0;
-		other.m_Data   = nullptr;
+		other.m_Line     = 0;
+		other.m_Column   = 0;
+		other.m_Capacity = 0;
+		other.m_Data     = nullptr;
 
 		return *this;
 	}
@@ -161,7 +165,11 @@ public:
 		std::memcpy(m_Data, temp, size * sizeof(ValType));
 
 		delete[] temp;
+
+		m_Capacity = size;
 	}
+
+	size_t Capacity() const { return m_Capacity; }
 
 private:
 	PtrType m_Data = nullptr;
