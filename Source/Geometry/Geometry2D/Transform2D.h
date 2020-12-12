@@ -2,8 +2,8 @@
 
 #include <initializer_list>
 
-#include "Matrix\Stack\SqrSMatrix.h"
-#include "Utilities\Angles.h"
+#include "../../Matrix/Stack/SqrSMatrix.h"
+#include "../../Utilities/Angles.h"
 
 namespace LCNMath {
 	namespace Geometry {

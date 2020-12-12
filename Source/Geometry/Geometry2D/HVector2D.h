@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Geometry\VectorND.h"
+#include "../VectorND.h"
 
 namespace LCNMath {
 	namespace Geometry {

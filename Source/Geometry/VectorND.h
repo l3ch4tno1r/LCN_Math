@@ -4,7 +4,7 @@
 #include <iostream>
 #include <initializer_list>
 
-#include "Matrix\Stack\SMatrix.h"
+#include "../Matrix/Stack/SMatrix.h"
 
 namespace LCNMath{
 	namespace Geometry	{

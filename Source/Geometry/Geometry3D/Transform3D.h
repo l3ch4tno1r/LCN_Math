@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Matrix\Stack\SqrSMatrix.h"
+#include "../../Matrix/Stack/SqrSMatrix.h"
 
 #include "HVector3D.h"
 
