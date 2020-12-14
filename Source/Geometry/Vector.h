@@ -217,3 +217,19 @@ inline Vector3DCrossProduct<EL, ER, T> operator^(const MatrixExpression<EL, T>& 
 	return Vector3DCrossProduct<EL, ER, T>(static_cast<const EL&>(el), static_cast<const ER&>(er));
 }
 */
+
+template<class EL, class ER>
+Vector3Df operator^(const MatrixExpression<EL>& el, const MatrixExpression<ER>& er)
+{
+	static_assert(Traits<EL>::SizeAtCT && Traits<ER>::SizeAtCT, "Size must be known at compile time.");
+	static_assert(Traits<EL>::LineAtCT   == 3 && Traits<ER>::LineAtCT   == 3);
+	static_assert(Traits<EL>::ColumnAtCT == 1 && Traits<ER>::ColumnAtCT == 1);
+
+	Vector3Df _el = el, _er = er;
+
+	return Vector3Df({
+		_el.y() * _er.z() - _el.z() * _er.y(),
+		_el.z() * _er.x() - _el.x() * _er.z(),
+		_el.x() * _er.y() - _el.y() * _er.x()
+	});
+}
