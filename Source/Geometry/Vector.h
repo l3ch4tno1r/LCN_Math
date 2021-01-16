@@ -165,6 +165,8 @@ typedef VectorND<float,  2, HomogeneousVector> HVector2Df;
 typedef VectorND<double, 2, RegularVector>      Vector2Dd;
 typedef VectorND<double, 2, HomogeneousVector> HVector2Dd;
 
+typedef VectorND<int, 2, RegularVector> Vector2Di;
+
 ///////////////////////
 //-- Cross product --//
 ///////////////////////
