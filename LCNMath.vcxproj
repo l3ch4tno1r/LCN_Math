@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Matrix\MatrixBlock.h" />
     <ClInclude Include="Source\Matrix\MatrixN.h" />
     <ClInclude Include="Source\_Geometry_Old\Geometry2D\HVector2D.h" />
     <ClInclude Include="Source\_Geometry_Old\Geometry2D\Transform2D.h" />
