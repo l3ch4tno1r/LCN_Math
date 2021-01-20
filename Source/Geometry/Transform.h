@@ -2,114 +2,117 @@
 
 #include "Vector.h"
 
-template<typename T, size_t N>
-class Transform : public StaticMatrixBase<Transform<T, N>, N + 1, N + 1>
+namespace LCN
 {
-public:
-	enum
+	template<typename T, size_t N>
+	class Transform : public StaticMatrixBase<Transform<T, N>, N + 1, N + 1>
 	{
-		Dim  = N,
-		HDim = N + 1
-	};
-
-	using ValType = T;
-	using PtrType = T*;
-	using RefType = T&;
-
-	using HVectorNDT = VectorND<ValType, Dim, HomogeneousVector>;
-
-public:
-	Transform()
-	{
-		for (size_t i = 0; i < this->Line(); ++i)
-			for (size_t j = 0; j < this->Column(); j++)
-				(*this)(i, j) = (i == j ? ValType(1) : ValType(0));
-	}
-
-	Transform(const std::initializer_list<ValType>& list)
-	{
-		size_t idx = 0;
-
-		for (auto e : list)
+	public:
+		enum
 		{
-			size_t i = idx / HDim;
-			size_t j = idx % HDim;
+			Dim  = N,
+			HDim = N + 1
+		};
 
-			m_Vectors[j][i] = e;
+		using ValType = T;
+		using PtrType = T*;
+		using RefType = T&;
 
-			++idx;
+		using HVectorNDT = VectorND<ValType, Dim, HomogeneousVector>;
+
+	public:
+		Transform()
+		{
+			for (size_t i = 0; i < this->Line(); ++i)
+				for (size_t j = 0; j < this->Column(); j++)
+					(*this)(i, j) = (i == j ? ValType(1) : ValType(0));
 		}
-	}
 
-	template<class E>
-	Transform(const MatrixExpression<E>& other)
-	{
-		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
+		Transform(const std::initializer_list<ValType>& list)
+		{
+			size_t idx = 0;
 
-		for (size_t i = 0; i < this->Line(); ++i)
-			for (size_t j = 0; j < this->Column(); j++)
-				(*this)(i, j) = other(i, j);
-	}
+			for (auto e : list)
+			{
+				size_t i = idx / HDim;
+				size_t j = idx % HDim;
 
-	template<class E>
-	Transform& operator=(const MatrixExpression<E>& other)
-	{
-		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
+				m_Vectors[j][i] = e;
 
-		for (size_t i = 0; i < this->Line(); ++i)
-			for (size_t j = 0; j < this->Column(); j++)
-				(*this)(i, j) = other(i, j);
-	}
+				++idx;
+			}
+		}
 
-	RefType operator()(size_t i, size_t j) { return m_Vectors[j][i]; }
-	ValType operator()(size_t i, size_t j) const { return m_Vectors[j][i]; }
+		template<class E>
+		Transform(const MatrixExpression<E>& other)
+		{
+			ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 
-	HVectorNDT& operator[](size_t i) { return m_Vectors[i]; }
-	const HVectorNDT& operator[](size_t i) const { return m_Vectors[i]; }
+			for (size_t i = 0; i < this->Line(); ++i)
+				for (size_t j = 0; j < this->Column(); j++)
+					(*this)(i, j) = other(i, j);
+		}
 
-	HVectorNDT& Ru() { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
-	const HVectorNDT& Ru() const { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
+		template<class E>
+		Transform& operator=(const MatrixExpression<E>& other)
+		{
+			ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 
-	HVectorNDT& Rv() { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
-	const HVectorNDT& Rv() const { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
+			for (size_t i = 0; i < this->Line(); ++i)
+				for (size_t j = 0; j < this->Column(); j++)
+					(*this)(i, j) = other(i, j);
+		}
 
-	HVectorNDT& Rw() { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
-	const HVectorNDT& Rw() const { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
+		RefType operator()(size_t i, size_t j) { return m_Vectors[j][i]; }
+		ValType operator()(size_t i, size_t j) const { return m_Vectors[j][i]; }
 
-	HVectorNDT& Tr() { return m_Vectors[Dim]; }
-	const HVectorNDT& Tr() const { return m_Vectors[Dim]; }
+		HVectorNDT& operator[](size_t i) { return m_Vectors[i]; }
+		const HVectorNDT& operator[](size_t i) const { return m_Vectors[i]; }
 
-public:
-	static const Transform& Identity()
-	{
-		static Transform identity;
-		return identity;
-	}
+		HVectorNDT& Ru() { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
+		const HVectorNDT& Ru() const { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
 
-	static StaticMatrix<ValType, HDim, 2 * HDim> Matrix2C()
-	{
-		return StaticMatrix<ValType, 4, 8>();
-	}
+		HVectorNDT& Rv() { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
+		const HVectorNDT& Rv() const { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
 
-private:
-	HVectorNDT m_Vectors[HDim];
+		HVectorNDT& Rw() { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
+		const HVectorNDT& Rw() const { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
 
-	enum
-	{
-		cm_Ru_Accessible = N >= 1,
-		cm_Rv_Accessible = N >= 2,
-		cm_Rw_Accessible = N >= 3
+		HVectorNDT& Tr() { return m_Vectors[Dim]; }
+		const HVectorNDT& Tr() const { return m_Vectors[Dim]; }
+
+	public:
+		static const Transform& Identity()
+		{
+			static Transform identity;
+			return identity;
+		}
+
+		static StaticMatrix<ValType, HDim, 2 * HDim> Matrix2C()
+		{
+			return StaticMatrix<ValType, 4, 8>();
+		}
+
+	private:
+		HVectorNDT m_Vectors[HDim];
+
+		enum
+		{
+			cm_Ru_Accessible = N >= 1,
+			cm_Rv_Accessible = N >= 2,
+			cm_Rw_Accessible = N >= 3
+		};
 	};
-};
 
-template<typename T, size_t N>
-class Traits<Transform<T, N>> : public Traits<StaticMatrixBase<Transform<T, N>, N + 1, N + 1>>
-{
-public:
-	using ValType = T;
-};
+	template<typename T, size_t N>
+	class Traits<Transform<T, N>> : public Traits<StaticMatrixBase<Transform<T, N>, N + 1, N + 1>>
+	{
+	public:
+		using ValType = T;
+	};
 
-typedef Transform<float,  2> Transform2Df;
-typedef Transform<double, 2> Transform2Dd;
-typedef Transform<float,  3> Transform3Df;
-typedef Transform<double, 3> Transform3Dd;
+	typedef Transform<float,  2> Transform2Df;
+	typedef Transform<double, 2> Transform2Dd;
+	typedef Transform<float,  3> Transform3Df;
+	typedef Transform<double, 3> Transform3Dd;
+}

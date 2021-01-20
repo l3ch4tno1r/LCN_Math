@@ -2,102 +2,104 @@
 
 #include "MatrixBase.h"
 
-////////////////////////////////
-//-- Stack allocated matrix --//
-////////////////////////////////
-
-template<typename T, size_t L, size_t C>
-class Matrix : public MatrixBase<Matrix<T, L, C>>
+namespace LCN
 {
-public:
-	using Base = MatrixBase<Matrix<T, L, C>>;
-
-	using ValType = T;
-	using RefType = ValType&;
-
-	Matrix() = default;
-	Matrix(const Matrix& other) = default;
-
-	Matrix(const std::initializer_list<ValType>& values)
+	////////////////////////////////
+	//-- Stack allocated matrix --//
+	////////////////////////////////
+	template<typename T, size_t L, size_t C>
+	class Matrix : public MatrixBase<Matrix<T, L, C>>
 	{
-		Base::operator=(values);
-	}
+	public:
+		using Base = MatrixBase<Matrix<T, L, C>>;
 
-	template<class E>
-	Matrix(const MatrixExpression<E>& expr)
-	{
-		Base::operator=(expr);
-	}
+		using ValType = T;
+		using RefType = ValType&;
 
-	///////////////////////////////
-	//-- Override base methods --//
-	///////////////////////////////
+		Matrix() = default;
+		Matrix(const Matrix& other) = default;
 
-	inline ValType operator()(size_t i, size_t j) const { return m_Data[i][j]; }
-	inline RefType operator()(size_t i, size_t j) { return m_Data[i][j]; }
+		Matrix(const std::initializer_list<ValType>& values)
+		{
+			Base::operator=(values);
+		}
 
-	inline constexpr size_t Line()   const { return L; }
-	inline constexpr size_t Column() const { return C; }
+		template<class E>
+		Matrix(const MatrixExpression<E>& expr)
+		{
+			Base::operator=(expr);
+		}
 
-	constexpr void AssertSquareMatrix() const { static_assert(L == C); }
+		///////////////////////////////
+		//-- Override base methods --//
+		///////////////////////////////
 
-	///////////////////////////////
-	//-- Assignement operators --//
-	///////////////////////////////
+		inline ValType operator()(size_t i, size_t j) const { return m_Data[i][j]; }
+		inline RefType operator()(size_t i, size_t j) { return m_Data[i][j]; }
 
-	Matrix& operator=(const Matrix&) = default;
+		inline constexpr size_t Line()   const { return L; }
+		inline constexpr size_t Column() const { return C; }
 
-	template<class E>
-	inline Matrix& operator=(const MatrixExpression<E>& expr)
-	{
-		return Base::operator=(expr);
-	}
+		constexpr void AssertSquareMatrix() const { static_assert(L == C); }
 
-	inline Matrix& operator=(const std::initializer_list<ValType>& values)
-	{
-		return Base::operator=(values);
-	}
+		///////////////////////////////
+		//-- Assignement operators --//
+		///////////////////////////////
 
-public:
-	inline static Matrix<T, L, 2 * C> Matrix2C() { return Matrix<T, L, 2 * C>(); }
+		Matrix& operator=(const Matrix&) = default;
 
-	friend class Base;
-	friend class Matrix<T, L, C / 2>; // O_o
+		template<class E>
+		inline Matrix& operator=(const MatrixExpression<E>& expr)
+		{
+			return Base::operator=(expr);
+		}
 
-private:
-	T m_Data[L][C];
-};
+		inline Matrix& operator=(const std::initializer_list<ValType>& values)
+		{
+			return Base::operator=(values);
+		}
 
-template<typename T, size_t L, size_t C>
-class Traits<Matrix<T, L, C>>
-{
-public:
-	enum
-	{
-		SizeAtCT   = true,
-		LineAtCT   = L,
-		ColumnAtCT = C
+	public:
+		inline static Matrix<T, L, 2 * C> Matrix2C() { return Matrix<T, L, 2 * C>(); }
+
+		friend class Base;
+		friend class Matrix<T, L, C / 2>; // O_o
+
+	private:
+		T m_Data[L][C];
 	};
 
-	using ValType = T;
-};
+	template<typename T, size_t L, size_t C>
+	class Traits<Matrix<T, L, C>>
+	{
+	public:
+		enum
+		{
+			SizeAtCT   = true,
+			LineAtCT   = L,
+			ColumnAtCT = C
+		};
 
-/////////////////////////
-//-- Type definition --//
-/////////////////////////
+		using ValType = T;
+	};
 
-typedef Matrix<float, 2, 2> Matrix2f;
-typedef Matrix<float, 3, 3> Matrix3f;
-typedef Matrix<float, 4, 4> Matrix4f;
+	/////////////////////////
+	//-- Type definition --//
+	/////////////////////////
 
-typedef Matrix<double, 2, 2> Matrix2d;
-typedef Matrix<double, 3, 3> Matrix3d;
-typedef Matrix<double, 4, 4> Matrix4d;
+	typedef Matrix<float, 2, 2> Matrix2f;
+	typedef Matrix<float, 3, 3> Matrix3f;
+	typedef Matrix<float, 4, 4> Matrix4f;
 
-typedef Matrix<int, 2, 2> Matrix2i;
-typedef Matrix<int, 3, 3> Matrix3i;
-typedef Matrix<int, 4, 4> Matrix4i;
+	typedef Matrix<double, 2, 2> Matrix2d;
+	typedef Matrix<double, 3, 3> Matrix3d;
+	typedef Matrix<double, 4, 4> Matrix4d;
 
-typedef Matrix<unsigned int, 2, 2> Matrix2u;
-typedef Matrix<unsigned int, 3, 3> Matrix3u;
-typedef Matrix<unsigned int, 4, 4> Matrix4u;
+	typedef Matrix<int, 2, 2> Matrix2i;
+	typedef Matrix<int, 3, 3> Matrix3i;
+	typedef Matrix<int, 4, 4> Matrix4i;
+
+	typedef Matrix<unsigned int, 2, 2> Matrix2u;
+	typedef Matrix<unsigned int, 3, 3> Matrix3u;
+	typedef Matrix<unsigned int, 4, 4> Matrix4u;
+}
