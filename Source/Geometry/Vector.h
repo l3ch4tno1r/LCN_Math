@@ -2,10 +2,17 @@
 
 #include <cmath>
 
-#include "../Matrix/StaticMatrix.h"
+#include "../Matrix/Matrix.h"
 
 namespace LCN
 {
+	//////////////////////////////
+	//-- Forward declarations --//
+	//////////////////////////////
+
+	template<class SubjectMatrix, size_t L, size_t C>
+	class MatrixBlock;
+
 	enum VectorType
 	{
 		RegularVector,
@@ -17,7 +24,7 @@ namespace LCN
 	////////////////////////
 
 	template<typename T, size_t N, VectorType VecType = RegularVector>
-	class VectorND : public StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>
+	class VectorND : public Matrix<T, (VecType == RegularVector ? N : N + 1), 1>
 	{
 	public:
 		enum
@@ -28,8 +35,8 @@ namespace LCN
 
 		using RVectorType = VectorND<T, Dim, RegularVector>;
 		using HVectorType = VectorND<T, Dim, HomogeneousVector>;
-		using BaseType    = StaticMatrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
-		using RVectorView = StaticMatrixView<HVectorType, Dim, 1>;
+		using BaseType    = Matrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
+		using VectorBlock = MatrixBlock<HVectorType, Dim, 1>;
 
 		using ValType = T;
 		using PtrType = T*;
@@ -102,16 +109,11 @@ namespace LCN
 			return HVectorType(*this, w);
 		}
 
-		RVectorView VectorView() const
+		VectorBlock Vector()
 		{
 			static_assert(VecType == HomogeneousVector, "Cannot use it with regular vector.");
 
-			return RVectorView(*this, 0, 0);
-		}
-
-		RVectorType Vector() const
-		{
-			return RVectorType(this->VectorView());
+			return VectorBlock(*this, 0, 0);
 		}
 
 	public:
@@ -139,7 +141,7 @@ namespace LCN
 	using HVectorND = VectorND<T, N, HomogeneousVector>;
 
 	template<typename T, size_t N, VectorType VecType>
-	class Traits<VectorND<T, N, VecType>> : public Traits<StaticMatrix<T, (VecType == RegularVector ? N : N + 1), 1>>
+	class Traits<VectorND<T, N, VecType>> : public Traits<Matrix<T, (VecType == RegularVector ? N : N + 1), 1>>
 	{};
 
 	/////////////////////

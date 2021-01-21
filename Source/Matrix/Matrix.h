@@ -4,6 +4,16 @@
 
 namespace LCN
 {
+	//////////////////////////////
+	//-- Forward declarations --//
+	//////////////////////////////
+
+	template<class SubjectMatrix>
+	class RowVectors;
+
+	template<class SubjectMatrix>
+	class ColVectors;
+
 	////////////////////////////////
 	//-- Stack allocated matrix --//
 	////////////////////////////////
@@ -11,7 +21,9 @@ namespace LCN
 	class Matrix : public MatrixBase<Matrix<T, L, C>>
 	{
 	public:
-		using Base = MatrixBase<Matrix<T, L, C>>;
+		using Base           = MatrixBase<Matrix<T, L, C>>;
+		using RowVectorsType = RowVectors<Matrix>;
+		using ColVectorsType = ColVectors<Matrix>;
 
 		using ValType = T;
 		using RefType = ValType&;
@@ -41,6 +53,9 @@ namespace LCN
 		inline constexpr size_t Column() const { return C; }
 
 		constexpr void AssertSquareMatrix() const { static_assert(L == C); }
+
+		RowVectorsType Rows()    { return RowVectorsType(*this); }
+		ColVectorsType Columns() { return ColVectorsType(*this); }
 
 		///////////////////////////////
 		//-- Assignement operators --//

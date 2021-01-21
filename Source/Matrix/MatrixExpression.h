@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include <iomanip>
+#include <cmath>
 
 #include "../Utilities/ErrorHandling.h"
 
@@ -47,10 +49,16 @@ namespace LCN
 	template<class E>
 	std::ostream& operator<<(std::ostream& stream, const MatrixExpression<E>& mat)
 	{
+		int maxw = 3;
+
+		//for (size_t i = 0; i < mat.Line(); ++i)
+		//	for (size_t j = 0; j < mat.Column(); ++j)
+		//		maxw = std::max(maxw, (int)std::log10(mat(i, j)) + (mat(i, j) < 0 ? 2 : 1));
+
 		for (size_t i = 0; i < mat.Line(); ++i)
 		{
 			for (size_t j = 0; j < mat.Column(); ++j)
-				stream << mat(i, j) << ' ';
+				stream << std::setw(maxw) << std::setprecision(2) << mat(i, j) << ' ';
 
 			stream << std::endl;
 		}
