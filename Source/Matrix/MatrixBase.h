@@ -211,7 +211,7 @@ namespace LCN
 			return temp.GaussElimination();
 		}
 
-		Derived Invert() const
+		Derived Inverse() const
 		{
 			this->AssertSquareMatrix();
 

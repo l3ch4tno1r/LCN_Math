@@ -58,7 +58,7 @@ namespace LCN
 		TranslationBlockType      TranslationBlock()       { return TranslationBlockType(*this, 0, Dim); }
 		ConstTranslationBlockType TranslationBlock() const { return ConstTranslationBlockType(*this, 0, Dim); }
 
-		// Works only if this is orthogonal
+		// Works only for transform because the rotation part is orthogonal
 		Transform QuickInverse() const
 		{
 			Transform inverse;
