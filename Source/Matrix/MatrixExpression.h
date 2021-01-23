@@ -72,6 +72,83 @@ namespace LCN
 	//-- Matrix Operations --//
 	///////////////////////////
 
+	#pragma region UnaryOperations
+	//////////////////////////
+	//-- Unary Operations --//
+	//////////////////////////
+
+	template<class Derived, class E>
+	class UnaryOperation : public MatrixExpression<Derived>
+	{
+	public:
+		using ValType = typename Traits<E>::ValType;
+
+	protected:
+		const E& e;
+
+		UnaryOperation(const E& e):
+			e(e)
+		{}
+	};
+
+	template<class Derived, class E>
+	class Traits<UnaryOperation<Derived, E>>
+	{
+	public:
+		enum
+		{
+			SizeAtCT   = Traits<E>::SizeAtCT,
+			LineAtCT   = Traits<E>::LineAtCT,
+			ColumnAtCT = Traits<E>::ColumnAtCT
+		};
+
+		using ValType = typename Traits<E>::ValType;
+	};
+
+	/////////////////////////////
+	//-- Minus (-) Operation --//
+	/////////////////////////////
+
+	template<class E>
+	class MinusOperation : public UnaryOperation<MinusOperation<E>, E>
+	{
+	public:
+		using ThisType = MinusOperation<E>;
+		using Base     = UnaryOperation<ThisType, E>;
+		using ValType  = typename Base::ValType;
+
+		ValType operator()(size_t i, size_t j) const { return -(this->e(i, j)); }
+
+		size_t Line()   const { return this->e.Line(); }
+		size_t Column() const { return this->e.Column(); }
+
+	private:
+		MinusOperation(const E& e) :
+			Base(e)
+		{}
+
+		template<class _E>
+		friend MinusOperation<_E> operator-(const MatrixExpression<_E>& e);
+	};
+
+	template<class E>
+	class Traits<MinusOperation<E>> : public Traits<UnaryOperation<MinusOperation<E>, E>>
+	{};
+
+	template<class _E>
+	inline MinusOperation<_E> operator-(const MatrixExpression<_E>& e)
+	{
+		return MinusOperation<_E>(static_cast<const _E&>(e));
+	}
+
+	#pragma endregion
+
+	#pragma region BinaryOperations
+
+	///////////////////////////
+	//-- Binary Operations --//
+	///////////////////////////
+
 	template<class EL, class ER>
 	class BinaryOpReturnType
 	{
@@ -350,6 +427,8 @@ namespace LCN
 
 		using ValType = typename Traits<E>::ValType;
 	};
+
+	#pragma endregion
 
 	#pragma endregion
 
