@@ -62,17 +62,6 @@ namespace LCN
 
 		Matrix& operator=(const Matrix&) = default;
 
-		template<class E>
-		inline Matrix& operator=(const MatrixExpression<E>& expr)
-		{
-			return Base::operator=(expr);
-		}
-
-		inline Matrix& operator=(const std::initializer_list<ValType>& values)
-		{
-			return Base::operator=(values);
-		}
-
 	public:
 		inline static Matrix<T, L, 2 * C> Matrix2C() { return Matrix<T, L, 2 * C>(); }
 

@@ -132,9 +132,9 @@ namespace LCN
 			return unitvector;
 		}
 
-		static const VectorND& X() { static_assert(X_Accessible); return UnitVector<0>(); }
-		static const VectorND& Y() { static_assert(Y_Accessible); return UnitVector<1>(); }
-		static const VectorND& Z() { static_assert(Z_Accessible); return UnitVector<2>(); }
+		static const VectorND& UnitX() { static_assert(X_Accessible); return UnitVector<0>(); }
+		static const VectorND& UnitY() { static_assert(Y_Accessible); return UnitVector<1>(); }
+		static const VectorND& UnitZ() { static_assert(Z_Accessible); return UnitVector<2>(); }
 	};
 
 	template<typename T, size_t N>

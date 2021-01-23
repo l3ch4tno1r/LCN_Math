@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../Matrix/Matrix.h"
 #include "Vector.h"
 
 namespace LCN
 {
 	template<typename T, size_t N>
-	class Transform : public StaticMatrixBase<Transform<T, N>, N + 1, N + 1>
+	class Transform : public Matrix<T, N + 1, N + 1>
 	{
 	public:
 		enum
@@ -18,84 +19,63 @@ namespace LCN
 		using PtrType = T*;
 		using RefType = T&;
 
-		using HVectorNDT = VectorND<ValType, Dim, HomogeneousVector>;
+		using Base = Matrix<T, N + 1, N + 1>;
+
+		using RotationBlockType         = MatrixBlock<Transform, Dim, Dim>;
+		using ConstRotationBlockType    = ConstMatrixBlock<Transform, Dim, Dim>;
+		using TranslationBlockType      = MatrixBlock<Transform, Dim, 1>;
+		using ConstTranslationBlockType = ConstMatrixBlock<Transform, Dim, 1>;
 
 	public:
-		Transform()
-		{
-			for (size_t i = 0; i < this->Line(); ++i)
-				for (size_t j = 0; j < this->Column(); j++)
-					(*this)(i, j) = (i == j ? ValType(1) : ValType(0));
-		}
+		Transform() :
+			Base(true)
+		{}
 
-		Transform(const std::initializer_list<ValType>& list)
-		{
-			size_t idx = 0;
-
-			for (auto e : list)
-			{
-				size_t i = idx / HDim;
-				size_t j = idx % HDim;
-
-				m_Vectors[j][i] = e;
-
-				++idx;
-			}
-		}
+		Transform(const std::initializer_list<ValType>& list) :
+			Base(list)
+		{}
 
 		template<class E>
-		Transform(const MatrixExpression<E>& other)
+		Transform(const MatrixExpression<E>& other) :
+			Base(other)
+		{}
+
+		auto Ru()       { static_assert(cm_Ru_Accessible); return this->Columns()[0]; }
+		auto Ru() const { static_assert(cm_Ru_Accessible); return this->Columns()[0]; }
+
+		auto Rv()       { static_assert(cm_Rv_Accessible); return this->Columns()[1]; }
+		auto Rv() const { static_assert(cm_Rv_Accessible); return this->Columns()[1]; }
+
+		auto Rw()       { static_assert(cm_Rw_Accessible); return this->Columns()[2]; }
+		auto Rw() const { static_assert(cm_Rw_Accessible); return this->Columns()[2]; }
+
+		auto Tr()       { return this->Columns()[Dim]; }
+		auto Tr() const { return this->Columns()[Dim]; }
+
+		RotationBlockType      RotationBlock()       { return RotationBlockType(*this, 0, 0); }
+		ConstRotationBlockType RotationBlock() const { return ConstRotationBlockType(*this, 0, 0); }
+
+		TranslationBlockType      TranslationBlock()       { return TranslationBlockType(*this, 0, Dim); }
+		ConstTranslationBlockType TranslationBlock() const { return ConstTranslationBlockType(*this, 0, Dim); }
+
+		// Works only if this is orthogonal
+		Transform QuickInverse() const
 		{
-			ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
+			Transform inverse;
 
-			for (size_t i = 0; i < this->Line(); ++i)
-				for (size_t j = 0; j < this->Column(); j++)
-					(*this)(i, j) = other(i, j);
-		}
+			auto r = this->RotationBlock();
+			auto t = this->TranslationBlock();
 
-		template<class E>
-		Transform& operator=(const MatrixExpression<E>& other)
-		{
-			ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
+			auto ir = inverse.RotationBlock();
+			auto it = inverse.TranslationBlock();
 
-			for (size_t i = 0; i < this->Line(); ++i)
-				for (size_t j = 0; j < this->Column(); j++)
-					(*this)(i, j) = other(i, j);
-		}
+			ir = r.Transpose();
+			it = -(ir * t);
 
-		RefType operator()(size_t i, size_t j) { return m_Vectors[j][i]; }
-		ValType operator()(size_t i, size_t j) const { return m_Vectors[j][i]; }
-
-		HVectorNDT& operator[](size_t i) { return m_Vectors[i]; }
-		const HVectorNDT& operator[](size_t i) const { return m_Vectors[i]; }
-
-		HVectorNDT& Ru() { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
-		const HVectorNDT& Ru() const { static_assert(cm_Ru_Accessible); return m_Vectors[0]; }
-
-		HVectorNDT& Rv() { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
-		const HVectorNDT& Rv() const { static_assert(cm_Rv_Accessible); return m_Vectors[1]; }
-
-		HVectorNDT& Rw() { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
-		const HVectorNDT& Rw() const { static_assert(cm_Rw_Accessible); return m_Vectors[2]; }
-
-		HVectorNDT& Tr() { return m_Vectors[Dim]; }
-		const HVectorNDT& Tr() const { return m_Vectors[Dim]; }
-
-	public:
-		static const Transform& Identity()
-		{
-			static Transform identity;
-			return identity;
-		}
-
-		static StaticMatrix<ValType, HDim, 2 * HDim> Matrix2C()
-		{
-			return StaticMatrix<ValType, 4, 8>();
+			return inverse;
 		}
 
 	private:
-		HVectorNDT m_Vectors[HDim];
-
 		enum
 		{
 			cm_Ru_Accessible = N >= 1,
@@ -105,7 +85,7 @@ namespace LCN
 	};
 
 	template<typename T, size_t N>
-	class Traits<Transform<T, N>> : public Traits<StaticMatrixBase<Transform<T, N>, N + 1, N + 1>>
+	class Traits<Transform<T, N>> : public Traits<Matrix<T, N + 1, N + 1>>
 	{
 	public:
 		using ValType = T;
