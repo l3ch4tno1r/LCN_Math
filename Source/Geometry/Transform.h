@@ -40,17 +40,17 @@ namespace LCN
 			Base(other)
 		{}
 
-		auto Ru()       { static_assert(cm_Ru_Accessible); return this->Columns()[0]; }
-		auto Ru() const { static_assert(cm_Ru_Accessible); return this->Columns()[0]; }
+		inline auto Ru()       { static_assert(cm_Ru_Accessible); return this->Columns()[0]; }
+		inline auto Ru() const { static_assert(cm_Ru_Accessible); return this->Columns()[0]; }
 
-		auto Rv()       { static_assert(cm_Rv_Accessible); return this->Columns()[1]; }
-		auto Rv() const { static_assert(cm_Rv_Accessible); return this->Columns()[1]; }
+		inline auto Rv()       { static_assert(cm_Rv_Accessible); return this->Columns()[1]; }
+		inline auto Rv() const { static_assert(cm_Rv_Accessible); return this->Columns()[1]; }
 
-		auto Rw()       { static_assert(cm_Rw_Accessible); return this->Columns()[2]; }
-		auto Rw() const { static_assert(cm_Rw_Accessible); return this->Columns()[2]; }
+		inline auto Rw()       { static_assert(cm_Rw_Accessible); return this->Columns()[2]; }
+		inline auto Rw() const { static_assert(cm_Rw_Accessible); return this->Columns()[2]; }
 
-		auto Tr()       { return this->Columns()[Dim]; }
-		auto Tr() const { return this->Columns()[Dim]; }
+		inline auto Tr()       { return this->Columns()[Dim]; }
+		inline auto Tr() const { return this->Columns()[Dim]; }
 
 		RotationBlockType      RotationBlock()       { return RotationBlockType(*this, 0, 0); }
 		ConstRotationBlockType RotationBlock() const { return ConstRotationBlockType(*this, 0, 0); }
