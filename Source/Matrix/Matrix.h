@@ -4,16 +4,6 @@
 
 namespace LCN
 {
-	//////////////////////////////
-	//-- Forward declarations --//
-	//////////////////////////////
-
-	template<class SubjectMatrix>
-	class RowVectors;
-
-	template<class SubjectMatrix>
-	class ColVectors;
-
 	////////////////////////////////
 	//-- Stack allocated matrix --//
 	////////////////////////////////
@@ -21,15 +11,27 @@ namespace LCN
 	class Matrix : public MatrixBase<Matrix<T, L, C>>
 	{
 	public:
-		using Base           = MatrixBase<Matrix<T, L, C>>;
-		using RowVectorsType = RowVectors<Matrix>;
-		using ColVectorsType = ColVectors<Matrix>;
+		using Base = MatrixBase<Matrix<T, L, C>>;
 
 		using ValType = T;
 		using RefType = ValType&;
 
 		Matrix() = default;
 		Matrix(const Matrix& other) = default;
+
+		Matrix(bool)
+		{
+			for (size_t i = 0; i < L; ++i)
+				for (size_t j = 0; j < C; ++j)
+					(*this)(i, j) = (i == j ? T(1) : T(0));
+		}
+
+		Matrix(ValType a)
+		{
+			for (size_t i = 0; i < L; ++i)
+				for (size_t j = 0; j < C; ++j)
+					(*this)(i, j) = a;
+		}
 
 		Matrix(const std::initializer_list<ValType>& values)
 		{
@@ -47,15 +49,12 @@ namespace LCN
 		///////////////////////////////
 
 		inline ValType operator()(size_t i, size_t j) const { return m_Data[i][j]; }
-		inline RefType operator()(size_t i, size_t j) { return m_Data[i][j]; }
+		inline RefType operator()(size_t i, size_t j)       { return m_Data[i][j]; }
 
 		inline constexpr size_t Line()   const { return L; }
 		inline constexpr size_t Column() const { return C; }
 
 		constexpr void AssertSquareMatrix() const { static_assert(L == C); }
-
-		RowVectorsType Rows()    { return RowVectorsType(*this); }
-		ColVectorsType Columns() { return ColVectorsType(*this); }
 
 		///////////////////////////////
 		//-- Assignement operators --//

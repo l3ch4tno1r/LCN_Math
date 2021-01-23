@@ -7,10 +7,39 @@
 
 namespace LCN
 {
+	//////////////////////////////
+	//-- Forward declarations --//
+	//////////////////////////////
+
+	template<class SubjectMatrix>
+	class RowVectors;
+
+	template<class SubjectMatrix>
+	class ConstRowVectors;
+
+	template<class SubjectMatrix>
+	class ColVectors;
+
+	template<class SubjectMatrix>
+	class ConstColVectors;
+
+	template<class SubjectMatrix>
+	class Transpose;
+
+	/////////////////////
+	//-- Matrix base --//
+	/////////////////////
+
 	template<class Derived>
 	class MatrixBase : public MatrixExpression<Derived>
 	{
 	public:
+		using RowVectorsType      = RowVectors<Derived>;
+		using ColVectorsType      = ColVectors<Derived>;
+		using ConstRowVectorsType = ConstRowVectors<Derived>;
+		using ConstColVectorsType = ConstColVectors<Derived>;
+		using TransposeType       = Transpose<Derived>;
+
 		using ValType = typename Traits<Derived>::ValType;
 		using RefType = ValType&;
 
@@ -145,6 +174,14 @@ namespace LCN
 			return (permutations % 2 == 0 ? ValType(1) : ValType(-1)) * pseudodet;
 		}
 
+		RowVectorsType Rows()    { return RowVectorsType(this->Derived()); }
+		ColVectorsType Columns() { return ColVectorsType(this->Derived()); }
+
+		ConstRowVectorsType Rows()    const { return ConstRowVectorsType(this->Derived()); }
+		ConstColVectorsType Columns() const { return ConstColVectorsType(this->Derived()); }
+
+		TransposeType Transpose() const { return TransposeType(this->Derived()); }
+
 		////////////////////////////////////////
 		//-- Square matrix specific methods --//
 		////////////////////////////////////////
@@ -203,6 +240,27 @@ namespace LCN
 					result(i, j) = temp(i, j + C);
 
 			return result;
+		}
+
+		////////////////////////
+		//-- Static methods --//
+		////////////////////////
+
+		static const Derived& Identity()
+		{
+			if constexpr (Traits<Derived>::SizeAtCT)
+				static_assert(Traits<Derived>::LineAtCT == Traits<Derived>::ColumnAtCT);
+			else
+				static_assert(false);
+
+			static Derived identity(true);
+			return identity;
+		}
+
+		static const Derived& Zero()
+		{
+			static Derived zero(ValType(0));
+			return zero;
 		}
 	};
 }
