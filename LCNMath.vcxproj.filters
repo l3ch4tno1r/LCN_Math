@@ -56,5 +56,8 @@
     <ClCompile Include="Source\Matrix\Matrix.h">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Geometry\RotationAxis.h">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

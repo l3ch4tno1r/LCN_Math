@@ -149,6 +149,7 @@
     <ClInclude Include="Source\Matrix\StaticMatrixBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Geometry\RotationAxis.h" />
     <ClCompile Include="Source\Matrix\Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
