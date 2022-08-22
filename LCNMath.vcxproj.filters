@@ -39,33 +39,6 @@
     <ClInclude Include="Source\Matrix\StaticMatrixBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\_Geometry_Old\Geometry2D\HVector2D.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Geometry_Old\Geometry2D\Transform2D.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Geometry_Old\Geometry3D\HVector3D.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Geometry_Old\Geometry3D\Transform3D.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Geometry_Old\HVectorND.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Geometry_Old\VectorND.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Matrix_Old\Heap\HMatrix.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Matrix_Old\Stack\SMatrix.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\_Matrix_Old\Stack\SqrSMatrix.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Matrix\MatrixN.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -81,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Matrix\Matrix.h">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Geometry\RotationAxis.h">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

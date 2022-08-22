@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{840EA722-4361-4AE5-895F-3C305B1DF81A}</ProjectGuid>
     <RootNamespace>LCNMath</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -89,6 +89,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,15 +139,6 @@
     <ClInclude Include="Source\Matrix\Transpose.h" />
     <ClInclude Include="Source\Matrix\MatrixBlock.h" />
     <ClInclude Include="Source\Matrix\MatrixN.h" />
-    <ClInclude Include="Source\_Geometry_Old\Geometry2D\HVector2D.h" />
-    <ClInclude Include="Source\_Geometry_Old\Geometry2D\Transform2D.h" />
-    <ClInclude Include="Source\_Geometry_Old\Geometry3D\HVector3D.h" />
-    <ClInclude Include="Source\_Geometry_Old\Geometry3D\Transform3D.h" />
-    <ClInclude Include="Source\_Geometry_Old\HVectorND.h" />
-    <ClInclude Include="Source\_Geometry_Old\VectorND.h" />
-    <ClInclude Include="Source\_Matrix_Old\Heap\HMatrix.h" />
-    <ClInclude Include="Source\_Matrix_Old\Stack\SMatrix.h" />
-    <ClInclude Include="Source\_Matrix_Old\Stack\SqrSMatrix.h" />
     <ClInclude Include="Source\Utilities\Angles.h" />
     <ClInclude Include="Source\Utilities\ErrorHandling.h" />
     <ClInclude Include="Source\Geometry\Transform.h" />
@@ -157,6 +149,7 @@
     <ClInclude Include="Source\Matrix\StaticMatrixBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Geometry\RotationAxis.h" />
     <ClCompile Include="Source\Matrix\Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

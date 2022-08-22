@@ -13,6 +13,9 @@ namespace LCN
 	template<class SubjectMatrix, size_t L, size_t C>
 	class MatrixBlock;
 
+	template<class SubjectMatrix, size_t L, size_t C>
+	class ConstMatrixBlock;
+
 	enum VectorType
 	{
 		RegularVector,
@@ -33,10 +36,11 @@ namespace LCN
 			HDim = N + 1
 		};
 
-		using RVectorType = VectorND<T, Dim, RegularVector>;
-		using HVectorType = VectorND<T, Dim, HomogeneousVector>;
-		using BaseType    = Matrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
-		using VectorBlock = MatrixBlock<HVectorType, Dim, 1>;
+		using RVectorType      = VectorND<T, Dim, RegularVector>;
+		using HVectorType      = VectorND<T, Dim, HomogeneousVector>;
+		using BaseType         = Matrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
+		using VectorBlock      = MatrixBlock<HVectorType, Dim, 1>;
+		using ConstVectorBlock = ConstMatrixBlock<HVectorType, Dim, 1>;
 
 		using ValType = T;
 		using PtrType = T*;
@@ -114,6 +118,13 @@ namespace LCN
 			static_assert(VecType == HomogeneousVector, "Cannot use it with regular vector.");
 
 			return VectorBlock(*this, 0, 0);
+		}
+
+		ConstVectorBlock Vector() const
+		{
+			static_assert(VecType == HomogeneousVector, "Cannot use it with regular vector.");
+
+			return ConstVectorBlock(*this, 0, 0);
 		}
 
 	public:

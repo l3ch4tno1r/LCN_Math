@@ -86,6 +86,21 @@ namespace LCN
 			return this->Derived();
 		}
 
+		////////////////////////////
+		//-- Shortcut operators --//
+		////////////////////////////
+
+		template<class E>
+		Derived& operator+=(const MatrixExpression<E>& expr)
+		{
+			// TODO : ASSERT matching sizes
+			for (size_t i = 0; i < this->Line(); ++i)
+				for (size_t j = 0; j < this->Column(); ++j)
+					(*this)(i, j) += expr(i, j);
+
+			return this->Derived();
+		}
+
 		/////////////////
 		//-- Methods --//
 		/////////////////
