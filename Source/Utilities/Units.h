@@ -4,8 +4,16 @@
 
 namespace LCN::Units
 {
+	/////////////////////////////
+	//-- Forward declaration --//
+	/////////////////////////////
+
 	template<typename _To, typename _From>
 	constexpr _To UnitCast(const _From&);
+
+	////////////////////
+	//-- class Unit --//
+	////////////////////
 
 	template<
 		typename _MeasurementType,
@@ -66,9 +74,27 @@ namespace LCN::Units
 			return *this;
 		}
 
+		constexpr Unit& operator*=(const ValueType& factor)
+		{
+			m_Measure *= factor;
+			return *this;
+		}
+
+		constexpr Unit& operator/=(const ValueType& factor)
+		{
+			m_Measure /= factor;
+			return *this;
+		}
+
 	private:
 		_Type m_Measure{ _Type(0) };
 	};
+
+#pragma region Utilities
+
+	///////////////////
+	//-- Utilities --//
+	///////////////////
 
 	template<
 		typename _MeasurementType,
@@ -106,6 +132,14 @@ namespace LCN::Units
 		return _To{ NewRatio::num * distance.Count() / NewRatio::den };
 	}
 
+#pragma endregion
+
+#pragma region Arithmetic operators
+
+	//////////////////////////////
+	//-- Arithmetic operators --//
+	//////////////////////////////
+
 	template<
 		typename _MeasurementType,
 		typename _Type1,
@@ -117,12 +151,12 @@ namespace LCN::Units
 		Unit<_MeasurementType, _Type1, _Ratio1>,
 		Unit<_MeasurementType, _Type2, _Ratio2>>
 	operator+(
-		const Unit<_MeasurementType, _Type1, _Ratio1>& measure1,
-		const Unit<_MeasurementType, _Type2, _Ratio2>& measure2)
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
 	{
 		using ReturnType = typename std::common_type<Unit<_MeasurementType, _Type1, _Ratio1>, Unit<_MeasurementType, _Type2, _Ratio2>>::type;
 
-		return ReturnType(ReturnType(measure1).Count() + ReturnType(measure2).Count());
+		return ReturnType(ReturnType(left).Count() + ReturnType(right).Count());
 	}
 
 	template<
@@ -136,12 +170,12 @@ namespace LCN::Units
 		Unit<_MeasurementType, _Type1, _Ratio1>,
 		Unit<_MeasurementType, _Type2, _Ratio2>>
 	operator-(
-		const Unit<_MeasurementType, _Type1, _Ratio1>& measure1,
-		const Unit<_MeasurementType, _Type2, _Ratio2>& measure2)
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
 	{
 		using ReturnType = typename std::common_type<Unit<_MeasurementType, _Type1, _Ratio1>, Unit<_MeasurementType, _Type2, _Ratio2>>::type;
 
-		return ReturnType(ReturnType(measure1).Count() - ReturnType(measure2).Count());
+		return ReturnType(ReturnType(left).Count() - ReturnType(right).Count());
 	}
 
 	template<
@@ -221,13 +255,121 @@ namespace LCN::Units
 		Unit<_MeasurementType, _Type1, _Ratio1>,
 		Unit<_MeasurementType, _Type2, _Ratio2>>
 	operator%(
-		const Unit<_MeasurementType, _Type1, _Ratio1>& measure1,
-		const Unit<_MeasurementType, _Type2, _Ratio2>& measure2)
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
 	{
 		using ReturnType = std::common_type_t<
 			Unit<_MeasurementType, _Type1, _Ratio1>,
 			Unit<_MeasurementType, _Type2, _Ratio2>>;
 
-		return ReturnType(ReturnType(measure1).Count() % ReturnType(measure2).Count());
+		return ReturnType(ReturnType(left).Count() % ReturnType(right).Count());
 	}
+
+#pragma endregion
+
+#pragma region Comparison operators
+
+	//////////////////////////////
+	//-- Comparison operators --//
+	//////////////////////////////
+
+	template<
+		typename _MeasurementType,
+		typename _Type1,
+		typename _Ratio1,
+		typename _Type2,
+		typename _Ratio2>
+	constexpr
+	bool
+	operator==(
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
+	{
+		using CommonType = std::common_type_t<
+			Unit<_MeasurementType, _Type1, _Ratio1>,
+			Unit<_MeasurementType, _Type2, _Ratio2>>;
+
+		return CommonType(left).Count() == CommonType(right).Count();
+	}
+
+	template<
+		typename _MeasurementType,
+		typename _Type1,
+		typename _Ratio1,
+		typename _Type2,
+		typename _Ratio2>
+	constexpr
+	bool
+	operator!=(
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
+	{
+		return !(left == right);
+	}
+
+	template<
+		typename _MeasurementType,
+		typename _Type1,
+		typename _Ratio1,
+		typename _Type2,
+		typename _Ratio2>
+	constexpr
+	bool
+	operator<(
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
+	{
+		using CommonType = std::common_type_t<
+			Unit<_MeasurementType, _Type1, _Ratio1>,
+			Unit<_MeasurementType, _Type2, _Ratio2>>;
+
+		return CommonType(left).Count() < CommonType(right).Count();
+	}	
+
+	template<
+		typename _MeasurementType,
+		typename _Type1,
+		typename _Ratio1,
+		typename _Type2,
+		typename _Ratio2>
+	constexpr
+	bool
+	operator<=(
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
+	{
+		return !(right < left);
+	}
+
+	template<
+		typename _MeasurementType,
+		typename _Type1,
+		typename _Ratio1,
+		typename _Type2,
+		typename _Ratio2>
+	constexpr
+	bool
+	operator>(
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
+	{
+		return right < left;
+	}
+
+	template<
+		typename _MeasurementType,
+		typename _Type1,
+		typename _Ratio1,
+		typename _Type2,
+		typename _Ratio2>
+	constexpr
+	bool
+	operator>=(
+		const Unit<_MeasurementType, _Type1, _Ratio1>& left,
+		const Unit<_MeasurementType, _Type2, _Ratio2>& right)
+	{
+		return !(left < right);
+	}
+
+#pragma endregion
 }
