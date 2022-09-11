@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <numeric>
 
 namespace LCN::Units
 {
@@ -110,8 +111,8 @@ namespace LCN::Units
 			_MeasurementType,
 			std::common_type_t<_Type1, _Type2>,
 			std::ratio<
-				std::_Gcd<_Ratio1::num, _Ratio2::num>::value,
-				std::_Lcm<_Ratio1::den, _Ratio2::den>::value>>;
+				std::gcd(_Ratio1::num, _Ratio2::num),
+				std::lcm(_Ratio1::den, _Ratio2::den)>>;
 	};
 
 	template<
@@ -122,14 +123,14 @@ namespace LCN::Units
 	constexpr
 	std::enable_if_t<std::is_same_v<_MeasurementType, typename _To::Type>, _To>
 	UnitCast(
-		const Unit<_MeasurementType, _Type, _Ratio2>& distance)
+		const Unit<_MeasurementType, _Type, _Ratio2>& unit)
 	{
 		using FromRatio = _Ratio2;
 		using ToRatio   = typename _To::RatioType;
 
 		using NewRatio = std::ratio_divide<FromRatio, ToRatio>;
 
-		return _To{ NewRatio::num * distance.Count() / NewRatio::den };
+		return _To{ NewRatio::num * unit.Count() / NewRatio::den };
 	}
 
 #pragma endregion
