@@ -143,10 +143,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	std::common_type_t<
 		Unit<_MeasurementType, _Type1, _Ratio1>,
@@ -162,10 +160,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	std::common_type_t<
 		Unit<_MeasurementType, _Type1, _Ratio1>,
@@ -247,10 +243,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	std::common_type_t<
 		Unit<_MeasurementType, _Type1, _Ratio1>,
@@ -276,10 +270,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	bool
 	operator==(
@@ -295,10 +287,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	bool
 	operator!=(
@@ -310,10 +300,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	bool
 	operator<(
@@ -329,10 +317,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	bool
 	operator<=(
@@ -344,10 +330,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	bool
 	operator>(
@@ -359,10 +343,8 @@ namespace LCN::Units
 
 	template<
 		typename _MeasurementType,
-		typename _Type1,
-		typename _Ratio1,
-		typename _Type2,
-		typename _Ratio2>
+		typename _Type1, typename _Ratio1,
+		typename _Type2, typename _Ratio2>
 	constexpr
 	bool
 	operator>=(
