@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cmath>
 
-#include "MathUtils/ErrorHandling.h"
+#include "LCNMath/MathUtils/ErrorHandling.h"
 
 namespace LCN
 {

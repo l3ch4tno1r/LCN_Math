@@ -30,25 +30,25 @@ namespace LCN
 	//-- Matrix base --//
 	/////////////////////
 
-	template<class Derived>
-	class MatrixBase : public MatrixExpression<Derived>
+	template<class _Derived>
+	class MatrixBase : public MatrixExpression<_Derived>
 	{
 	public:
-		using RowVectorsType      = RowVectors<Derived>;
-		using ColVectorsType      = ColVectors<Derived>;
-		using ConstRowVectorsType = ConstRowVectors<Derived>;
-		using ConstColVectorsType = ConstColVectors<Derived>;
-		using TransposeType       = Transpose<Derived>;
+		using RowVectorsType      = RowVectors<_Derived>;
+		using ColVectorsType      = ColVectors<_Derived>;
+		using ConstRowVectorsType = ConstRowVectors<_Derived>;
+		using ConstColVectorsType = ConstColVectors<_Derived>;
+		using TransposeType       = Transpose<_Derived>;
 
-		using ValType = typename Traits<Derived>::ValType;
+		using ValType = typename Traits<_Derived>::ValType;
 		using RefType = ValType&;
 
 		inline RefType operator()(size_t i, size_t j) { return this->Derived()(i, j); }
 
 		template<class E>
-		Derived& operator=(const MatrixExpression<E>& expr)
+		_Derived& operator=(const MatrixExpression<E>& expr)
 		{
-			using t_Derived = Traits<Derived>;
+			using t_Derived = Traits<_Derived>;
 			using t_Expr    = MatrixExpression<E>;
 
 			if constexpr (t_Derived::SizeAtCT && t_Expr::SizeAtCT)
@@ -63,9 +63,9 @@ namespace LCN
 			return this->Derived();
 		}
 
-		Derived& operator=(const std::initializer_list<ValType>& values)
+		_Derived& operator=(const std::initializer_list<ValType>& values)
 		{
-			if constexpr (!Traits<Derived>::SizeAtCT)
+			if constexpr (!Traits<_Derived>::SizeAtCT)
 				ASSERT(this->Line() > 0 && this->Column() > 0);
 
 			size_t Idx = 0;
@@ -91,7 +91,7 @@ namespace LCN
 		////////////////////////////
 
 		template<class E>
-		Derived& operator+=(const MatrixExpression<E>& expr)
+		_Derived& operator+=(const MatrixExpression<E>& expr)
 		{
 			// TODO : ASSERT matching sizes
 			for (size_t i = 0; i < this->Line(); ++i)
@@ -226,11 +226,11 @@ namespace LCN
 			return temp.GaussElimination();
 		}
 
-		Derived Inverse() const
+		_Derived Inverse() const
 		{
 			this->AssertSquareMatrix();
 
-			auto temp = Derived::Matrix2C();
+			auto temp = _Derived::Matrix2C();
 
 			size_t L = this->Line();
 			size_t C = this->Column();
@@ -261,7 +261,7 @@ namespace LCN
 		//-- Static methods --//
 		////////////////////////
 
-		static const Derived& Identity()
+		static const _Derived& Identity()
 		{
 			if constexpr (Traits<Derived>::SizeAtCT)
 				static_assert(Traits<Derived>::LineAtCT == Traits<Derived>::ColumnAtCT);
@@ -272,9 +272,9 @@ namespace LCN
 			return identity;
 		}
 
-		static const Derived& Zero()
+		static const _Derived& Zero()
 		{
-			static Derived zero(ValType(0));
+			static _Derived zero(ValType(0));
 			return zero;
 		}
 	};
