@@ -65,7 +65,7 @@ namespace LCN
 	public:
 		inline static Matrix<T, L, 2 * C> Matrix2C() { return Matrix<T, L, 2 * C>(); }
 
-		friend class Base;
+		friend Base;
 		friend class Matrix<T, L, C / 2>; // O_o
 
 	private:

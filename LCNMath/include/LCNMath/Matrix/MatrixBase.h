@@ -195,7 +195,7 @@ namespace LCN
 		ConstRowVectorsType Rows()    const { return ConstRowVectorsType(this->Derived()); }
 		ConstColVectorsType Columns() const { return ConstColVectorsType(this->Derived()); }
 
-		TransposeType Transpose() const { return TransposeType(this->Derived()); }
+		TransposeType Transposed() const { return TransposeType{ this->Derived() }; }
 
 		////////////////////////////////////////
 		//-- Square matrix specific methods --//
@@ -221,7 +221,7 @@ namespace LCN
 		{
 			this->AssertSquareMatrix();
 
-			Derived temp = *this;
+			_Derived temp = *this;
 
 			return temp.GaussElimination();
 		}
@@ -248,7 +248,7 @@ namespace LCN
 			if (std::abs(pseudodet) < ValType(0.0001))
 				throw std::exception("This matrix cannot be inverted.");
 
-			Derived result;
+			_Derived result;
 
 			for (size_t i = 0; i < L; i++)
 				for (size_t j = 0; j < C; j++)
@@ -263,12 +263,12 @@ namespace LCN
 
 		static const _Derived& Identity()
 		{
-			if constexpr (Traits<Derived>::SizeAtCT)
-				static_assert(Traits<Derived>::LineAtCT == Traits<Derived>::ColumnAtCT);
-			else
-				static_assert(false);
+			if constexpr (Traits<_Derived>::SizeAtCT)
+				static_assert(Traits<_Derived>::LineAtCT == Traits<_Derived>::ColumnAtCT);
+			//else
+			//	static_assert(false);
 
-			static Derived identity(true);
+			static _Derived identity(true);
 			return identity;
 		}
 

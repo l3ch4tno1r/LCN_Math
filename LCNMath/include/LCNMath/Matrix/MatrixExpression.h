@@ -384,14 +384,14 @@ namespace LCN
 			scalefactor(scalefactor)
 		{}
 
-		template<class E>
-		friend ScaleOperation<E> operator*(const MatrixExpression<E>&, typename Traits<E>::ValType);
+		template<class _E>
+		friend ScaleOperation<_E> operator*(const MatrixExpression<_E>&, typename Traits<_E>::ValType);
 
-		template<class E>
-		friend ScaleOperation<E> operator*(typename Traits<E>::ValType, const MatrixExpression<E>&);
+		template<class _E>
+		friend ScaleOperation<_E> operator*(typename Traits<_E>::ValType, const MatrixExpression<_E>&);
 
-		template<class E>
-		friend ScaleOperation<E> operator/(const MatrixExpression<E>&, typename Traits<E>::ValType);
+		template<class _E>
+		friend ScaleOperation<_E> operator/(const MatrixExpression<_E>&, typename Traits<_E>::ValType);
 	};
 
 	template<class E>

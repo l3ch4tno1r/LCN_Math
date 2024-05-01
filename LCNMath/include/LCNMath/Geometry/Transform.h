@@ -69,7 +69,7 @@ namespace LCN
 			auto ir = inverse.RotationBlock();
 			auto it = inverse.TranslationBlock();
 
-			ir = r.Transpose();
+			ir = r.Transposed();
 			it = -(ir * t);
 
 			return inverse;
