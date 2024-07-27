@@ -7,5 +7,7 @@
 #define ASSERT(X) if(!(X)) __debugbreak()
 #endif
 #else
-#define ASSERT(X)
+#include <cassert>
+
+#define ASSERT(X) assert(X);
 #endif

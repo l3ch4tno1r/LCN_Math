@@ -2,9 +2,9 @@
 
 #include <cmath>
 
-#include "../Matrix/Matrix.h"
+#include "LCNMath/Algebra/Matrix.h"
 
-namespace LCN
+namespace LCN::Math
 {
 	//////////////////////////////
 	//-- Forward declarations --//
@@ -27,7 +27,7 @@ namespace LCN
 	////////////////////////
 
 	template<typename T, size_t N, VectorType VecType = RegularVector>
-	class VectorND : public Matrix<T, (VecType == RegularVector ? N : N + 1), 1>
+	class VectorND : public Algebra::Matrix<T, (VecType == RegularVector ? N : N + 1), 1>
 	{
 	public:
 		enum
@@ -38,7 +38,7 @@ namespace LCN
 
 		using RVectorType      = VectorND<T, Dim, RegularVector>;
 		using HVectorType      = VectorND<T, Dim, HomogeneousVector>;
-		using BaseType         = Matrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
+		using BaseType         = Algebra::Matrix<T, (VecType == RegularVector ? Dim : HDim), 1>;
 		using VectorBlock      = MatrixBlock<HVectorType, Dim, 1>;
 		using ConstVectorBlock = ConstMatrixBlock<HVectorType, Dim, 1>;
 
@@ -60,7 +60,7 @@ namespace LCN
 		{}
 
 		template<class E>
-		VectorND(const MatrixExpression<E>& e) :
+		VectorND(const Algebra::MatrixExpression<E>& e) :
 			BaseType(e)
 		{}
 
@@ -152,7 +152,7 @@ namespace LCN
 	using HVectorND = VectorND<T, N, HomogeneousVector>;
 
 	template<typename T, size_t N, VectorType VecType>
-	class Traits<VectorND<T, N, VecType>> : public Traits<Matrix<T, (VecType == RegularVector ? N : N + 1), 1>>
+	class Algebra::Traits<VectorND<T, N, VecType>> : public Algebra::Traits<Algebra::Matrix<T, (VecType == RegularVector ? N : N + 1), 1>>
 	{};
 
 	/////////////////////
@@ -187,11 +187,11 @@ namespace LCN
 	///////////////////////
 
 	template<class EL, class ER>
-	Vector3Df operator^(const MatrixExpression<EL>& el, const MatrixExpression<ER>& er)
+	Vector3Df operator^(const Algebra::MatrixExpression<EL>& el, const Algebra::MatrixExpression<ER>& er)
 	{
-		static_assert(Traits<EL>::SizeAtCT && Traits<ER>::SizeAtCT, "Size must be known at compile time.");
-		static_assert(Traits<EL>::LineAtCT   == 3 && Traits<ER>::LineAtCT   == 3);
-		static_assert(Traits<EL>::ColumnAtCT == 1 && Traits<ER>::ColumnAtCT == 1);
+		static_assert(Algebra::Traits<EL>::SizeAtCT && Algebra::Traits<ER>::SizeAtCT, "Size must be known at compile time.");
+		static_assert(Algebra::Traits<EL>::LineAtCT   == 3 && Algebra::Traits<ER>::LineAtCT   == 3);
+		static_assert(Algebra::Traits<EL>::ColumnAtCT == 1 && Algebra::Traits<ER>::ColumnAtCT == 1);
 
 		Vector3Df _el = el, _er = er;
 

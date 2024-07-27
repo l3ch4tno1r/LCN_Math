@@ -4,7 +4,7 @@
 
 #include "StaticMatrixBase.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	template<typename T, size_t L, size_t C>
 	class StaticMatrix : public StaticMatrixBase<StaticMatrix<T, L, C>, L, C>

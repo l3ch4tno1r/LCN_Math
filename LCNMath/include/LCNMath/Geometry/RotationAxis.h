@@ -1,6 +1,6 @@
-#include "../Matrix/MatrixExpression.h"
+#include "LCNMath/Algebra/MatrixExpression.h"
 
-namespace LCN
+namespace LCN::Math
 {
 	template<typename T>
 	class RotationAxis : public MatrixExpression<RotationAxis<T>>

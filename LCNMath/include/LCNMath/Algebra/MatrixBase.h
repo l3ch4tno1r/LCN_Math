@@ -5,7 +5,7 @@
 
 #include "MatrixExpression.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	//////////////////////////////
 	//-- Forward declarations --//

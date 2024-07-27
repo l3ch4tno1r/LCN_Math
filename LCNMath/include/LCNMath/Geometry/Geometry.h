@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Matrix/MatrixBlock.h"
-#include "../Matrix/Transpose.h"
+#include "LCNMath/Algebra/MatrixBlock.h"
+#include "LCNMath/Algebra/Transpose.h"
 
 #include "Transform.h"
 #include "Vector.h"

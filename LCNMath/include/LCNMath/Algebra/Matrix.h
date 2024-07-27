@@ -2,11 +2,12 @@
 
 #include "MatrixBase.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	////////////////////////////////
 	//-- Stack allocated matrix --//
 	////////////////////////////////
+
 	template<typename T, size_t L, size_t C>
 	class Matrix : public MatrixBase<Matrix<T, L, C>>
 	{

@@ -2,7 +2,7 @@
 
 #include "MatrixBase.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	template<class Subject, size_t L, size_t C>
 	class StaticMatrixView;

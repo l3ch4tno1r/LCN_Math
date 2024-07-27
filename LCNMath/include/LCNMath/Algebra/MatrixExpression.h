@@ -6,7 +6,7 @@
 
 #include "LCNMath/MathUtils/ErrorHandling.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	//////////////////////
 	//-- Traits class --//
@@ -433,6 +433,60 @@ namespace LCN
 	#pragma endregion
 
 	#pragma endregion
+
+	#pragma region MatrixComparison
+	///////////////////////////
+	//-- Matrix Comparison --//
+	///////////////////////////
+
+	//--------------------------------//
+	template<class EL, class ER>
+	struct CompareCompatible
+	{
+		inline static constexpr bool SizeAtCT = Traits<EL>::SizeAtCT && Traits<ER>::SizeAtCT;
+
+		inline static constexpr bool Lines  = Traits<EL>::LineAtCT   == Traits<ER>::LineAtCT;
+		inline static constexpr bool Colums = Traits<EL>::ColumnAtCT == Traits<ER>::ColumnAtCT;
+
+		inline static constexpr bool Value = SizeAtCT && Lines && Colums;
+	};
+
+	//--------------------------------//
+	template<class EL, class ER>
+	bool
+	operator==(
+		const MatrixExpression<EL>& el,
+		const MatrixExpression<ER>& er)
+	{
+		if constexpr (CompareCompatible<EL, ER>::SizeAtCT)
+			static_assert(CompareCompatible<EL, ER>::Value);
+		else
+			ASSERT((el.Line() == er.Line()) && (el.Column() == er.Column()));
+
+		for(int i = 0; i < el.Line(); ++i)
+		{
+			for (int j = 0; j < el.Column(); ++j)
+			{
+				if(el(i, j) != er(i, j))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+	//--------------------------------//
+	template<class EL, class ER>
+	inline
+	bool
+	operator!=(
+		const MatrixExpression<EL>& el,
+		const MatrixExpression<ER>& er)
+	{
+		return not (el == er);
+	}
+
+	#pragma end region
 }
 
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Matrix/Matrix.h"
+#include "LCNMath/Algebra/Matrix.h"
 #include "Vector.h"
 
-namespace LCN
+namespace LCN::Math
 {
 	template<typename T, size_t N>
 	class Transform : public Matrix<T, N + 1, N + 1>

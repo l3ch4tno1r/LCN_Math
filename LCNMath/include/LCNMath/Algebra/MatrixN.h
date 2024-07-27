@@ -2,7 +2,7 @@
 
 #include "MatrixBase.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	///////////////////////////////
 	//-- Heap allocated matrix --//

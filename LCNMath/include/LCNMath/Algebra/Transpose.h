@@ -4,7 +4,7 @@
 
 #include "MatrixBase.h"
 
-namespace LCN
+namespace LCN::Math::Algebra
 {
 	template<class SubjectMatrix>
 	class Transpose : public MatrixBase<Transpose<SubjectMatrix>>
