@@ -10,7 +10,8 @@ add_executable(${THIS}
     Algebra/UT03_Modifiers.cpp
     Algebra/UT04_MatrixComparision.cpp
     Geometry/UT01_Vector.cpp
-    Geometry/UT02_Transform.cpp)
+    Geometry/UT02_Transform.cpp
+    .experimental/UT01_Homogeneous.cpp)
 
 target_link_libraries(${THIS} PRIVATE
     GTest::gtest

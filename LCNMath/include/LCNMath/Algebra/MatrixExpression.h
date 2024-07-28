@@ -230,8 +230,8 @@ namespace LCN::Math::Algebra
 	public:
 		enum
 		{
-			LineAtCT   = (Traits<EL>::LineAtCT   == Traits<ER>::LineAtCT   ? Traits<EL>::LineAtCT   : -1),
-			ColumnAtCT = (Traits<EL>::ColumnAtCT == Traits<ER>::ColumnAtCT ? Traits<EL>::ColumnAtCT : -1)
+			LineAtCT   = ((int)Traits<EL>::LineAtCT   == (int)Traits<ER>::LineAtCT   ? Traits<EL>::LineAtCT   : -1),
+			ColumnAtCT = ((int)Traits<EL>::ColumnAtCT == (int)Traits<ER>::ColumnAtCT ? Traits<EL>::ColumnAtCT : -1)
 		};
 	};
 

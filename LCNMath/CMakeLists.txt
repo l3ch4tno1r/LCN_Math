@@ -15,7 +15,8 @@ install(
     EXPORT   LCNMathLibTargets
     INCLUDES DESTINATION include())
 
-install(EXPORT LCNMathLibTargets
+install(
+    EXPORT LCNMathLibTargets
     FILE LCNMathLibTargets.cmake
     NAMESPACE LCNMath::
     DESTINATION lib/cmake/LCNMathLib)
