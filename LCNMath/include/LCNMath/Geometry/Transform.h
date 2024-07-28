@@ -6,7 +6,7 @@
 namespace LCN::Math
 {
 	template<typename T, size_t N>
-	class Transform : public Matrix<T, N + 1, N + 1>
+	class Transform : public Algebra::Matrix<T, N + 1, N + 1>
 	{
 	public:
 		enum
@@ -19,7 +19,7 @@ namespace LCN::Math
 		using PtrType = T*;
 		using RefType = T&;
 
-		using Base = Matrix<T, N + 1, N + 1>;
+		using Base = Algebra::Matrix<T, N + 1, N + 1>;
 
 		using RotationBlockType         = MatrixBlock<Transform, Dim, Dim>;
 		using ConstRotationBlockType    = ConstMatrixBlock<Transform, Dim, Dim>;
@@ -36,7 +36,7 @@ namespace LCN::Math
 		{}
 
 		template<class E>
-		Transform(const MatrixExpression<E>& other) :
+		Transform(const Algebra::MatrixExpression<E>& other) :
 			Base(other)
 		{}
 
@@ -85,7 +85,7 @@ namespace LCN::Math
 	};
 
 	template<typename T, size_t N>
-	class Traits<Transform<T, N>> : public Traits<Matrix<T, N + 1, N + 1>>
+	class Algebra::Traits<Transform<T, N>> : public Algebra::Traits<Algebra::Matrix<T, N + 1, N + 1>>
 	{
 	public:
 		using ValType = T;

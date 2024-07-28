@@ -180,7 +180,8 @@ namespace LCN::Math
 	typedef VectorND<double, 2, RegularVector>      Vector2Dd;
 	typedef VectorND<double, 2, HomogeneousVector> HVector2Dd;
 
-	typedef VectorND<int, 2, RegularVector> Vector2Di;
+	typedef VectorND<int, 2, RegularVector>     Vector2Di;
+	typedef VectorND<int, 2, HomogeneousVector> HVector2Di;
 
 	///////////////////////
 	//-- Cross product --//

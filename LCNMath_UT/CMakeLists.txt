@@ -9,7 +9,8 @@ add_executable(${THIS}
     Algebra/UT02_DataAccess.cpp
     Algebra/UT03_Modifiers.cpp
     Algebra/UT04_MatrixComparision.cpp
-    Geometry/UT01_Vector.cpp)
+    Geometry/UT01_Vector.cpp
+    Geometry/UT02_Transform.cpp)
 
 target_link_libraries(${THIS} PRIVATE
     GTest::gtest
